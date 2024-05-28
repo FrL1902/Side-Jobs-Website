@@ -30,31 +30,33 @@
                         <a class="nav-link @yield('homeButton')" href="/">Home</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link @yield('findJobButton')" href="/searchJobs">Find Jobs</a>
-                    </li>
-
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle click-scroll" href="#section_3" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle click-scroll" href="#section_3" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Find</a>
 
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="shop-listing.html">Shop Listing</a></li>
+                            <li><a class="dropdown-item" href="/searchUsers">Find Users</a></li>
 
-                            <li><a class="dropdown-item" href="shop-detail.html">Shop Detail</a></li>
+                            <li><a class="dropdown-item" href="/searchJobs">Find Jobs</a></li>
                         </ul>
-                    </li> --}}
-
-                    <li class="nav-item">
-                        <a class="nav-link @yield('findUserButton')" href="/searchUsers">Find Users</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="/about">About</a>
                     </li>
 
+
+                    @auth
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Manage Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout" style="font-weight: bolder; color:black">Logout</a>
+                    </li>
+                    @else
                     <li class="nav-item">
                         <a class="nav-link" href="/loginPage" style="font-weight: bolder; color:black">Login</a>
                     </li>
+                    @endauth
                 </ul>
             </div>
         </div>

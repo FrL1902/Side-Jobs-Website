@@ -3,57 +3,12 @@
 
 @section('content')
 
-<section class="hero-section hero-slide d-flex justify-content-center align-items-center" id="section_1">
-    <div class="container">
-        <div class="row">
-
-            <div class="col-lg-8 col-12 text-center mx-auto">
-                <div class="hero-section-text">
-                    @auth
-                    <small style="font-weight:bolder; color:white">Welcome to OdderWork {{Auth::user()->first_name}}</small>
-                    @endauth
-
-                    <h1 class="hero-title text-white mt-2 mb-4">Find and set jobs to meet your needs</h1>
-
-                    <div class="hero-btn d-flex justify-content-center align-items-center">
-                        <a class="bi-arrow-down hero-btn-link smoothscroll" href="#section_2"></a>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<section class="about-section section-padding" id="section_2">
-    <div class="container">
-        <div class="row align-items-center">
-
-            <div class="col-lg-5 col-12">
-                <h2 class="mt-2 mb-4">Why OdderWork?</h2>
-
-                <h4 class="text-muted mb-3">in the beginning, we want to connect people better</h4>
-
-                <p>OdderWork is an online platform for side job posting and searching. The main purpose of this platform is to bridge people that need workers and people who need jobs better than any website. We hope you find this platform as useful as we do.</p>
-            </div>
-
-            <div class="col-lg-3 col-md-5 col-5 mx-lg-auto">
-                <img src="images/ikea-assembly.jpg" class="about-image about-image-small img-fluid" alt="">
-            </div>
-
-            <div class="col-lg-4 col-md-7 col-7">
-                <img src="images/pay.png" class="about-image img-fluid" alt="">
-            </div>
-
-        </div>
-    </div>
-</section>
-
 <section style="background-color: rgb(226, 226, 226)">
     <div class="container">
         <div class="d-flex justify-content-between">
             <div>
                 <h3 class="mt-3">Here are some newly posted jobs!</h3>
+                <h3 class="mt-3">{{auth()->user()->name}}</h3>
             </div>
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button>

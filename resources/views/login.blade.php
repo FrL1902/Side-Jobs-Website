@@ -19,7 +19,7 @@
     <main>
         <div class="w-50 center border rounded px-3 py-3 mx-auto">
             <h2 class="text-center" style="color:white"><span style="color: rgb(57, 82, 208)">Odder</span><span style="color: rgb(245, 205, 25)">Work</span></h2>
-            <form action="/login" method="POST">
+            <form action="/login" method="post">
                 @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
@@ -29,12 +29,12 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" name="password" class="form-control">
                 </div>
-                {{-- <div class="mb-3 d-grid" style="padding-top:0; padding-bottom:0">
-                    <button name="submit" type="submit" class="btn btn-primary">Login</button>
-                </div> --}}
+                @if (session('status'))
+                        <p class="text-center text-danger">{{ session('status') }}</p>
+                @endif
                 <div class="form-group" style="padding-top:0; padding-bottom:0" id="submitIncomingButtonAdd">
                     <div class="card mt-4">
-                        <button name="submit" type="submit" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </div>
             </form>

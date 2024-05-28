@@ -1,5 +1,4 @@
 @extends('layout.layout')
-@section('findUserButton', 'active')
 
 @section('content')
 

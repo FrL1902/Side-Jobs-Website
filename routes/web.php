@@ -21,8 +21,11 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index']);
+Route::get('/welcome', [HomeController::class, 'welcome']);
 
 Route::get('/searchJobs', [JobController::class, 'search_job_page']);
 
 Route::get('/loginPage', [UserController::class, 'login_page']);
+Route::post('/login', [UserController::class, 'user_login']);
+Route::get('/logout', [UserController::class, 'logout']);
 Route::get('/searchUsers', [UserController::class, 'search_user_page']);

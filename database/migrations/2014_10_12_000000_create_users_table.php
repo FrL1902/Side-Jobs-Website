@@ -15,10 +15,17 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('role');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('phone_number');
+            $table->string('city_id');#FK, tp ngga ditulis langsung, pake sql nanti ngolahnya
+            // $table->foreignId('city_id')->references('city_id')->on('cities')->onDelete('cascade');
+            $table->string('address');
+            $table->string('account_activated');
+            $table->string('image_path');
             $table->rememberToken();
             $table->timestamps();
         });
