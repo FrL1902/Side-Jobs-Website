@@ -30,6 +30,30 @@
                         <a class="nav-link @yield('homeButton')" href="/">Home</a>
                     </li>
 
+                    {{-- ADMIN BAR --}}
+                    @auth
+                        @if (Auth::user()->role == 3)
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle click-scroll" href="#section_3" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Manage</a>
+
+                                <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Users</a></li>
+                                    <li><a class="dropdown-item" href="#">Jobs</a></li>
+                                    <li><a class="dropdown-item" href="#">Applicants</a></li>
+                                </ul>
+                            </li>
+                        @endif
+                    @endauth
+
+                    {{-- EMPLOYER BAR --}}
+                    @auth
+                        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">Manage Jobs</a>
+                            </li>
+                        @endif
+                    @endauth
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle click-scroll" href="#section_3" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Find</a>
 
@@ -45,10 +69,8 @@
                     </li>
 
 
+                    {{-- kalo ngga login --}}
                     @auth
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Manage Jobs</a>
-                    </li>
                     @else
                     <li class="nav-item">
                         <a class="nav-link" href="/loginPage" style="font-weight: bolder; color:black">Login</a>
