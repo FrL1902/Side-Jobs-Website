@@ -53,4 +53,23 @@ class UserController extends Controller
 
         return redirect('/');
     }
+
+    public function switch_role_to_worker()
+    {
+        // dd(auth()->user());
+        User::where('id',  auth()->user()->id)->update([
+            'role' =>1,
+        ]);
+
+        return redirect('/');
+    }
+
+    public function switch_role_to_employer()
+    {
+        User::where('id',  auth()->user()->id)->update([
+            'role' =>2,
+        ]);
+
+        return redirect('/');
+    }
 }

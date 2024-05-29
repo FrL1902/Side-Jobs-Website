@@ -49,9 +49,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/about">Manage Jobs</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout" style="font-weight: bolder; color:black">Logout</a>
-                    </li>
                     @else
                     <li class="nav-item">
                         <a class="nav-link" href="/loginPage" style="font-weight: bolder; color:black">Login</a>
@@ -59,6 +56,30 @@
                     @endauth
                 </ul>
             </div>
+
+            @auth
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    {{-- 1 itu worker --}}
+                    @if (Auth::user()->role == 1)
+                    <li><a class="dropdown-item" href="/toEmployer">Switch to Employer</a></li>
+                    {{-- 2 itu employer --}}
+                    @elseif (Auth::user()->role == 2)
+                    <li><a class="dropdown-item" href="/toWorker">Switch to Worker</a></li>
+                    @endif
+                  {{-- <li><hr class="dropdown-divider"></li> --}}
+                    @auth
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="/logout" style="font-weight: bolder; color:black">Logout</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
+            @endauth
         </div>
     </nav>
 
