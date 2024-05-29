@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('employers', function (Blueprint $table) {
-            $table->id('employer_id');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->id();
+            // $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('is_unlocked');
+            $table->string('user_email');
             $table->string('employer_address');
             $table->string('employer_description');
             $table->timestamps();
