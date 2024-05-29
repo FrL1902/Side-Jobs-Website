@@ -38,6 +38,7 @@
                     </div>
                 </div>
             </form>
+            <a class="text-end" href="/registerPage" style>don't have an account?</a>
         </div>
     </main>
 

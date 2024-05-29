@@ -114,17 +114,20 @@
                 @if (Auth::user()->role == 3)
 
                 @elseif (Auth::user()->role == 1)
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button>
+                    <div class="justify-content-center">
+                        <a type="button" class="btn align-middle mt-3" style="color:white; background-color: rgb(256,212,76)" href="/searchJobs">Search more jobs</a>
+                        {{-- <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button> --}}
                     </div>
                 @elseif (Auth::user()->role == 2)
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Manage your jobs</button>
+                    <div class="justify-content-center">
+                        <a type="button" class="btn align-middle mt-3" style="color:white; background-color: rgb(256,212,76)" href="/#">Manage your jobs</a>
+                        {{-- <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Manage your jobs</button> --}}
                     </div>
                 @endif
             @else
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button>
+                <div class="justify-content-center">
+                    {{-- <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button> --}}
+                    <a type="button" class="btn align-middle mt-3" style="color:white; background-color: rgb(256,212,76)" href="/searchJobs">Search more jobs</a>
                 </div>
             @endauth
 

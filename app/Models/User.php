@@ -41,4 +41,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function checkEmployerAvailability()
+    {
+        $userInfo = auth()->user();
+
+        $employer = Employer::where('user_email', $userInfo->email)->first();
+
+
+        if ($employer->is_unlocked == 'yes') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

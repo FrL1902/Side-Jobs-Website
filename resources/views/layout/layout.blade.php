@@ -88,10 +88,14 @@
                     <li><a class="dropdown-item" href="#">Profile</a></li>
                     {{-- 1 itu worker --}}
                     @if (Auth::user()->role == 1)
-                    <li><a class="dropdown-item" href="/toEmployer">Switch to Employer</a></li>
+                        @if (App\Models\User::checkEmployerAvailability())
+                            <li><a class="dropdown-item" href="/toEmployer">Switch to Employer</a></li>
+                        @else
+                            <li><a class="dropdown-item" href="/employerRegister">Buat Pekerjaan</a></li>
+                        @endif
                     {{-- 2 itu employer --}}
                     @elseif (Auth::user()->role == 2)
-                    <li><a class="dropdown-item" href="/toWorker">Switch to Worker</a></li>
+                        <li><a class="dropdown-item" href="/toWorker">Switch to Worker</a></li>
                     @endif
                   {{-- <li><hr class="dropdown-divider"></li> --}}
                     @auth
