@@ -44,3 +44,5 @@ Route::post('/signEmployer', [UserController::class, 'employer_register']);
 Route::get('/applicantsPage', [UserController::class, 'employer_applicants_page']);
 Route::get('/acceptApplicant/{id}', [UserController::class, 'accept_employer_applicant']);
 Route::get('/declineApplicant/{id}', [UserController::class, 'decline_employer_applicant']);
+
+Route::get('/userProfile', [UserController::class, 'user_profile']);

@@ -37,6 +37,14 @@ class UserController extends Controller
         return view('applicants', compact('employer'));
     }
 
+    public function user_profile(){
+        $userInfo = User::where('id',  auth()->user()->id)->first();
+        $workerInfo = Worker::where('user_email',  auth()->user()->email)->first();
+        $employerInfo = Employer::where('user_email',  auth()->user()->email)->first();
+
+        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo'));
+    }
+
     public function user_login(Request $request)
     {
         $request->validate([

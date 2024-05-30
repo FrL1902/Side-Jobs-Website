@@ -86,7 +86,7 @@
                   <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="/userProfile">Profile</a></li>
                     {{-- 1 itu worker --}}
                     @if (Auth::user()->role == 1)
                         @if (App\Models\User::checkEmployerAvailability())
