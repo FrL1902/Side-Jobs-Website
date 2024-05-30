@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             // $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('is_unlocked');
+            $table->string('has_applied');
             $table->string('user_email');
             $table->string('employer_address');
             $table->string('employer_description');

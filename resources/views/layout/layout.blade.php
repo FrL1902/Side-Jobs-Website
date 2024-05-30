@@ -14,6 +14,7 @@
     <link href="css/bootstrap-icons.css" rel="stylesheet">
     <link href="css/owl.carousel.min.css" rel="stylesheet">
     <link href="css/tooplate-moso-interior.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
@@ -39,7 +40,7 @@
                                 <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">Users</a></li>
                                     <li><a class="dropdown-item" href="#">Jobs</a></li>
-                                    <li><a class="dropdown-item" href="#">Applicants</a></li>
+                                    <li><a class="dropdown-item" href="/applicantsPage">Applicants</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -159,6 +160,21 @@
     <script src="js/jquery.backstretch.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/custom.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-row').DataTable({
+                //     dom: 'Bfrtip',
+                //     buttons: [
+                //         'copy', 'csv', 'excel', 'pdf', 'print'
+                //     ]
+                //
+            });
+        });
+    </script>
+
+    @yield('script')
 
 </body>
 </html>

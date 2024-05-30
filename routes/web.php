@@ -36,3 +36,11 @@ Route::get('/searchUsers', [UserController::class, 'search_user_page']);
 
 Route::get('/toWorker', [UserController::class, 'switch_role_to_worker']);
 Route::get('/toEmployer', [UserController::class, 'switch_role_to_employer']);
+
+Route::get('/employerRegister', [UserController::class, 'employer_register_page']);
+Route::post('/signEmployer', [UserController::class, 'employer_register']);
+
+
+Route::get('/applicantsPage', [UserController::class, 'employer_applicants_page']);
+Route::get('/acceptApplicant/{id}', [UserController::class, 'accept_employer_applicant']);
+Route::get('/declineApplicant/{id}', [UserController::class, 'decline_employer_applicant']);

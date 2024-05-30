@@ -27,6 +27,16 @@ class UserController extends Controller
         return view('register');
     }
 
+    public function employer_register_page(){
+        return view('employerRegister');
+    }
+
+    public function employer_applicants_page(){
+        $employer = Employer::all();
+
+        return view('applicants', compact('employer'));
+    }
+
     public function user_login(Request $request)
     {
         $request->validate([
@@ -92,6 +102,7 @@ class UserController extends Controller
 
         $employer = new Employer();
         $employer->is_unlocked = 'no';
+        $employer->has_applied = 'no';
         $employer->user_email = $request->email;
         $employer->employer_address = '-';
         $employer->employer_description = '-';
@@ -99,6 +110,63 @@ class UserController extends Controller
 
 
         return redirect('/');
+    }
+
+    public function employer_register(Request $request){
+
+        $userApplied = Employer::where('user_email',  auth()->user()->email)->first();
+        if($userApplied->has_applied == 'yes'){
+            session()->flash('status', 'anda sudah mendaftar, mohon menunggu');
+            return redirect()->back();
+        }
+
+        $request->validate([
+            'background' => 'required|min:30|max:200',
+            'location' => 'required|min:10|max:100',
+        ], [
+            'background.required' => 'latar belakang (background) anda harus diisi, ceritakan sedikit tentang anda',
+            'background.min' => 'latar belakang (background) minimal 30 karakter',
+            'background.max' => 'latar belakang (background) maksimal 200 karakter',
+            'location.required' => 'lokasi kerja anda harus diisi, lokasi pekerjaan yang anda akan buka, offline (tempatnya apa) atau online dengan apa',
+            'location.min' => 'lokasi kerja minimal 10 karakter',
+            'location.max' => 'lokasi kerja maksimal 100 karakter',
+        ]);
+
+        // Employer::where('id',  auth()->user()->id)->update([
+        //     'role' =>1,
+        // ]);
+
+        // dd($request->background);
+
+        Employer::where('user_email',  auth()->user()->email)->update([
+            'employer_description' => $request->background,
+            'employer_address' => $request->location,
+            'has_applied' => 'yes',
+        ]);
+
+
+        return redirect('/');
+    }
+
+    public function accept_employer_applicant($id){
+        // dd($id . 1);
+        Employer::where('user_email',  $id)->update([
+            'is_unlocked' => 'yes',
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function decline_employer_applicant($id){
+        // dd($id . 2);
+        Employer::where('user_email',  $id)->update([
+            'is_unlocked' => 'no',
+            'has_applied' => 'no',
+            'employer_address' => '-',
+            'employer_description' => '-',
+        ]);
+
+        return redirect()->back();
     }
 
     public function logout()
