@@ -46,3 +46,8 @@ Route::get('/acceptApplicant/{id}', [UserController::class, 'accept_employer_app
 Route::get('/declineApplicant/{id}', [UserController::class, 'decline_employer_applicant']);
 
 Route::get('/userProfile', [UserController::class, 'user_profile']);
+Route::post('/changePicture', [UserController::class, 'change_profile_picture']);
+Route::post('/changeUserInfo', [UserController::class, 'change_user_info']);
+Route::post('/changeWorkerInfo', [UserController::class, 'change_worker_info']);
+Route::post('/changeEmployerInfo', [UserController::class, 'change_employer_info']);
+

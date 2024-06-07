@@ -83,7 +83,11 @@
             @auth
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    @if ($userInfo->image_path == '-')
+                        <img src="https://cdn.discordapp.com/attachments/1211571942965125160/1248652686350483506/image.png?ex=666471ef&is=6663206f&hm=705ba28f7dff993d87433b4206f96499b55b93a742db3997fcefcfb573e4ca51&" alt="mdo" width="32" height="32" class="rounded-circle">
+                    @else
+                        <img src="{{ Storage::url($userInfo->image_path) }}" alt="mdo" width="32" height="32" class="rounded-circle">
+                    @endif
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                     <li><a class="dropdown-item" href="/userProfile">Profile</a></li>
@@ -111,6 +115,9 @@
     </nav>
 
     <main>
+        @if ($errors->any())
+                        <p class="text-center text-danger">{{ $errors->first() }}</p>
+                @endif
         @yield('content')
     </main>
 

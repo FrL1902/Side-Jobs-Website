@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -205,5 +206,102 @@ class UserController extends Controller
         ]);
 
         return redirect('/');
+    }
+
+    public function change_profile_picture(Request $request){
+        // dd(1);
+        // old method of inserting image without "Image Intervention"
+
+        $request->validate([ // cek image terakhir karena berat
+            'user_image' => 'required|mimes:jpeg,png,jpg|max:10240',
+        ], [
+            'user_image.required' => 'Gambar harus dimasukkan',
+            'user_image.mimes' => 'Tipe foto yang diterima hanya jpeg, jpg, dan png',
+            'user_image.max' => 'Ukuran foto harus dibawah 10 MB'
+        ]);
+
+        $file = $request->file('user_image');
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
+        Storage::putFileAs('public/userImage', $file, $imageName);
+        $imageName = 'userImage/' . $imageName;
+
+        User::where('id',  auth()->user()->id)->update([
+            'image_path' => $imageName,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function change_user_info(Request $request){
+        // dd(2);
+        $request->validate([
+            'phone_number' => 'required|max:30',
+            'city' => 'required',
+            'user_address' => 'required|min:10|max:100',
+        ], [
+            'phone_number.required' => 'Phone Number anda harus diisi',
+            'phone_number.max' => 'Phone Number maksimal 30 karakter',
+            'city.required' => 'city anda harus diisi',
+            'user_address.required' => 'address anda harus diisi',
+            'user_address.min' => 'address minimal 10 karakter',
+            'user_address.max' => 'address maksimal 100 karakter',
+        ]);
+        // dd(2);
+
+        User::where('id',  auth()->user()->id)->update([
+            'phone_number' => $request->phone_number,
+            'city_id' => $request->city,
+            'address' => $request->user_address,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function change_worker_info(Request $request){
+        // dd($request->worker_description . $request->worker_preference);
+        // dd(1);
+        $request->validate([
+            'worker_description' => 'required|min:30|max:200',
+            'worker_preference' => 'required|min:10|max:100',
+        ], [
+            'worker_description.required' => 'description anda harus diisi',
+            'worker_description.min' => 'description minimal 30 karakter',
+            'worker_description.max' => 'description maksimal 200 karakter',
+            'worker_preference.required' => 'preference pekerjaan harus diisi',
+            'worker_preference.min' => 'preference minimal 10 karakter',
+            'worker_preference.max' => 'preference maksimal 100 karakter',
+        ]);
+        // dd(2);
+
+        Worker::where('user_email',  auth()->user()->email)->update([
+            'worker_description' => $request->worker_description,
+            'worker_preference' => $request->worker_preference,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function change_employer_info(Request $request){
+        // dd($request->employer_description . $request->employer_address);
+
+        $request->validate([
+            'employer_description' => 'required|min:30|max:200',
+            'employer_address' => 'required|min:10|max:100',
+        ], [
+            'employer_description.required' => 'description anda harus diisi',
+            'employer_description.min' => 'description minimal 30 karakter',
+            'employer_description.max' => 'description maksimal 200 karakter',
+            'employer_address.required' => 'address kerja anda harus diisi',
+            'employer_address.min' => 'address minimal 10 karakter',
+            'employer_address.max' => 'address maksimal 100 karakter',
+        ]);
+
+        Employer::where('user_email',  auth()->user()->email)->update([
+            'employer_description' => $request->employer_description,
+            'employer_address' => $request->employer_address,
+        ]);
+
+
+        return redirect()->back();
     }
 }
