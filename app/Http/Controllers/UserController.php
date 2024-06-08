@@ -102,7 +102,7 @@ class UserController extends Controller
         $account->city_id = '-';
         $account->address = '-';
         $account->account_activated = 'yes';
-        $account->image_path = 'https://cdn.discordapp.com/attachments/1211571942965125160/1245333634555314256/image.png?ex=66585ed3&is=66570d53&hm=c7dc8bd96a82f1acf657238514336414d8551bf3347fde69e6c3a94de8854cc6&';
+        $account->image_path = '-';
         $account->save();
 
         $worker = new Worker();
