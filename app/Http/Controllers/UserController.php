@@ -15,7 +15,9 @@ class UserController extends Controller
 {
     public function search_user_page()
     {
-        return view('findUsers');
+        return view('findUsers', [
+            'users' => DB::table('users')->simplePaginate(2)
+        ]);
     }
 
     public function login_page()
@@ -216,9 +218,13 @@ class UserController extends Controller
             'user_image' => 'required|mimes:jpeg,png,jpg|max:10240',
         ], [
             'user_image.required' => 'Gambar harus dimasukkan',
-            'user_image.mimes' => 'Tipe foto yang diterima hanya jpeg, jpg, dan png',
+            'user_image.mimes' => 'Tipe file yang diterima hanya jpeg, jpg, dan png',
             'user_image.max' => 'Ukuran foto harus dibawah 10 MB'
         ]);
+
+        if(auth()->user()->image_path != '-'){
+            Storage::delete('public/' . auth()->user()->image_path);
+        }
 
         $file = $request->file('user_image');
         $imageName = time() . '.' . $file->getClientOriginalExtension();
@@ -229,6 +235,7 @@ class UserController extends Controller
             'image_path' => $imageName,
         ]);
 
+        session()->flash('status', 'Profile Picture Changed!');
         return redirect()->back();
     }
 
@@ -254,6 +261,7 @@ class UserController extends Controller
             'address' => $request->user_address,
         ]);
 
+        session()->flash('status', 'User Info Changed!');
         return redirect()->back();
     }
 
@@ -278,6 +286,7 @@ class UserController extends Controller
             'worker_preference' => $request->worker_preference,
         ]);
 
+        session()->flash('status', 'Worker Info Changed!');
         return redirect()->back();
     }
 
@@ -301,7 +310,7 @@ class UserController extends Controller
             'employer_address' => $request->employer_address,
         ]);
 
-
+        session()->flash('status', 'Employer Info Changed!');
         return redirect()->back();
     }
 }
