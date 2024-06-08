@@ -50,7 +50,8 @@
                     @auth
                         @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                             <li class="nav-item">
-                                <a class="nav-link" href="/about">Manage Jobs</a>
+                                <a class="nav-link @yield('manageJobsButton')" href="/manageJobs">Manage Jobs</a>
+                                {{-- <a class="nav-link @yield('homeButton')" href="/">Home</a> --}}
                             </li>
                         @endif
                     @endauth
@@ -84,7 +85,7 @@
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (auth()->user()->image_path == '-')
-                        <img src="https://cdn.discordapp.com/attachments/1211571942965125160/1248652686350483506/image.png?ex=666471ef&is=6663206f&hm=705ba28f7dff993d87433b4206f96499b55b93a742db3997fcefcfb573e4ca51&" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="https://cdn.discordapp.com/attachments/1211571942965125160/1248652686350483506/image.png?ex=6665c36f&is=666471ef&hm=a6f77486ba2416785ba3f3dabc9152dc9a6169213de3ca343b65958142c7d778&" alt="mdo" width="32" height="32" class="rounded-circle">
                     @else
                         <img src="{{ Storage::url(auth()->user()->image_path) }}" alt="mdo" width="32" height="32" class="rounded-circle">
                     @endif
