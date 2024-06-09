@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -16,8 +17,44 @@ class JobController extends Controller
     public function manage_jobs_page()
     {
         $city = City::all();
+
+        $activeJobs = Job::where('employer_id', auth()->user()->id)
+                    ->where(function($query) {
+                        $query->where('job_status', 'opened')
+                            ->orWhere('job_status', 'ongoing');
+                    })
+                    ->latest()->take(2)->get();
+
+        $pastJobs = Job::where('employer_id', auth()->user()->id)
+                    ->where(function($query) {
+                        $query->where('job_status', 'finished')
+                            ->orWhere('job_status', 'cancelled');
+                    })
+                    ->latest()->take(2)->get();
         // dd($job);
-        return view('manageJobs', compact('city'));
+
+
+        // $activeJobs = DB::table('jobs')
+        // ->join('cities', 'jobs.city', '=', 'cities.id')
+        // ->select('jobs.*', 'cities.city_name')
+        // ->where('jobs.employer_id', auth()->user()->id)
+        // ->where(function($query) {
+        //     $query->where('jobs.job_status', 'opened')
+        //         ->orWhere('jobs.job_status', 'ongoing');
+        // })
+        // ->latest()->take(2)->get();
+
+        // $pastJobs = DB::table('jobs')
+        // ->join('cities', 'jobs.city', '=', 'cities.id')
+        // ->select('jobs.*', 'cities.city_name')
+        // ->where('jobs.employer_id', auth()->user()->id)
+        // ->where(function($query) {
+        //     $query->where('jobs.job_status', 'finished')
+        //         ->orWhere('jobs.job_status', 'cancelled');
+        // })
+        // ->latest()->take(2)->get();
+
+        return view('manageJobs', compact('city', 'activeJobs', 'pastJobs'));
     }
 
     public function make_job(Request $request){
