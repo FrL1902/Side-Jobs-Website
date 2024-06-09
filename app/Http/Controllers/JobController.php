@@ -11,8 +11,13 @@ class JobController extends Controller
 {
     public function search_job_page()
     {
-        return view('findJobs');
-    }//
+        $activeJobs = Job::where(function($query) {
+                        $query->where('job_status', 'opened');
+                    })
+                    ->simplePaginate(5);
+
+        return view('findJobs', compact('activeJobs'));
+    }
 
     public function manage_jobs_page()
     {
@@ -123,5 +128,11 @@ class JobController extends Controller
 
         session()->flash('status', 'New Job Made!');
         return redirect()->back();
+    }
+
+    public function view_job($id){
+        $jobInfo = Job::find($id);
+
+        return view('viewJob', compact('jobInfo'));
     }
 }

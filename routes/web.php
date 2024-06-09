@@ -53,3 +53,4 @@ Route::post('/changeEmployerInfo', [UserController::class, 'change_employer_info
 
 Route::get('/manageJobs', [JobController::class, 'manage_jobs_page']);
 Route::post('/makeJob', [JobController::class, 'make_job']);
+Route::get('/viewJob/{id}', [JobController::class, 'view_job']);

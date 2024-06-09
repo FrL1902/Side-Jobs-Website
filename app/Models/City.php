@@ -13,4 +13,12 @@ class City extends Model
     protected $primaryKey = 'city_id';
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public static function seeCity($id){
+        $city = City::where('id', '=',(int) $id)->first();
+        // dd($city);
+        $cityName = $city->city_name;
+
+        return $cityName;
+    }
 }
