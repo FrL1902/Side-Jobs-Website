@@ -53,7 +53,11 @@
                         </div>
                         <div class="mt-2">
                             <span>City</span>
-                            <p>{{$userInfo->city_id}}</p>
+                            @if ($userInfo->city_id == '-')
+                                <p>-</p>
+                            @else
+                                <p>{{$userInfo->city_name}}</p>
+                            @endif
                         </div>
                         <div class="mt-2">
                             <span>Address</span>
@@ -184,10 +188,26 @@
                         name="phone_number">
                 </div>
                 <div class="form-group mt-3">
-                    <label for="city">City</label>
+                    {{-- <label for="city">City</label>
                     <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
                         placeholder="City" value="{{$userInfo->city_id}}" id="city"
-                        name="city">
+                        name="city"> --}}
+
+                    <label for="editUserInfo">City</label>
+                    <select class="form-control" id="editUserInfo"
+                        data-width="100%" name="city">
+                        @if ($userInfo->city_id == '-')
+                            <option value="">pilih kota anda saat ini</option>
+                        @else
+                            <option value="{{$userInfo->city_id}}">{{$userInfo->city_name}}</option>
+                        @endif
+                        @foreach ($cities as $data)
+                            {{-- <option>asdfsa</option> --}}
+                            <option value="{{ $data->id }}">
+                                {{ $data->city_name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group mt-3">
                     <label for="user_address">Address</label>
@@ -275,3 +295,12 @@
 </div>
 @endsection
 
+@section('script')
+<script>
+    $('#editUserInfo').select2({
+        dropdownParent: $('#editUserInfoModal'),
+        // placeholder: 'Pilih Kota'
+    });
+</script>
+
+@endsection

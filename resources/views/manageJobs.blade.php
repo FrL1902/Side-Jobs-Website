@@ -49,8 +49,8 @@
                             <label for="customerLabelExportBrand">City</label>
                             <select class="form-control" id="customerLabelExportBrand"
                                 data-width="100%" name="city">
+                                <option></option>
                                 @foreach ($city as $data)
-                                    <option></option>
                                     <option value="{{ $data->id }}">
                                         {{ $data->city_name }}
                                     </option>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
 use App\Models\Employer;
 use App\Models\User;
 use App\Models\Worker;
@@ -41,11 +42,26 @@ class UserController extends Controller
     }
 
     public function user_profile(){
-        $userInfo = User::where('id',  auth()->user()->id)->first();
         $workerInfo = Worker::where('user_email',  auth()->user()->email)->first();
         $employerInfo = Employer::where('user_email',  auth()->user()->email)->first();
 
-        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo'));
+        if(auth()->user()->city_id == '-'){
+            $cities = City::all();
+            $userInfo = User::where('id',  auth()->user()->id)->first();
+            // dd(1);
+        } else {
+            $cities = City::where('id', '!=', auth()->user()->city_id)->get();
+            $userInfo = DB::table('users')
+            ->join('cities', 'users.city_id', '=', 'cities.id')
+            ->select('users.*', 'cities.city_name')
+            ->where('users.id',  auth()->user()->id)->first();
+            // dd(2);
+        }
+
+        // dd($cities);
+        // dd($userInfo);
+
+        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo', 'cities'));
     }
 
     public function user_login(Request $request)
