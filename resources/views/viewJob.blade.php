@@ -75,12 +75,22 @@
                                         aria-label="Disabled input example" disabled>
                         </div>
                         @if (Auth::check())
-                            <div class="form-group mt-4" style="width:100%">
-                                <a href="#" class="btn btn-success" style="width:100%">Apply to job</a>
-                            </div>
+                            @if ($jobInfo->employer_id == auth()->user()->id)
+                                <div class="form-group mt-4" style="width:100%">
+                                    <a href="" class="btn btn-danger" style="width:100%">Cannot Apply To Your Own Job</a>
+                                </div>
+                            @elseif (App\Models\Job::applyCheck($jobInfo->id ,auth()->user()->id) == 1)
+                                <div class="form-group mt-4" style="width:100%">
+                                    <a href="" class="btn btn-danger" style="width:100%">Already Applied</a>
+                                </div>
+                            @else
+                                <div class="form-group mt-4" style="width:100%">
+                                    <a data-bs-target="#applyModal"data-bs-toggle="modal" class="btn btn-success" style="width:100%">Apply To Job</a>
+                                </div>
+                            @endif
                         @else
                             <div class="form-group mt-4" style="width:100%">
-                                <a href="/loginPage" class="btn btn-success" style="width:100%">Apply to job</a>
+                                <a href="/loginPage" class="btn btn-success" style="width:100%">Apply To Job</a>
                             </div>
                         @endif
                         {{-- <div class="card mt-4">
@@ -88,6 +98,34 @@
                         </div> --}}
                         {{-- <button class="btn btn-success">Apply to job</button> --}}
                     </div>
+                </div>
+            </div>
+        </div>
+        {{-- modal --}}
+        <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Apply Job</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="/applyJob">
+                    @csrf
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="job_message">Message to employer</label>
+                                <textarea class="form-control" rows="3" name="job_message" id="job_message" placeholder="write a short description about yourself and why you want this job" style="border-color: #aaaaaa"></textarea>
+                            </div>
+                            <p style="font-size:small; color:red; font-weight:bold">Before you apply, be sure to see the employer's profile and contact them</p>
+                            <div class="d-flex flex-row-reverse mt-4">
+                                <button type="submit" class="btn btn-success">Apply</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="jobIdHidden" value="{{ $jobInfo->id }}">
+                        @auth
+                            <input type="hidden" name="applierIdHidden" value="{{auth()->user()->id}}">
+                        @endauth
+                    </form>
                 </div>
             </div>
         </div>
