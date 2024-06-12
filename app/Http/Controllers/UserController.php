@@ -187,6 +187,8 @@ class UserController extends Controller
             'is_unlocked' => 'yes',
         ]);
 
+        session()->flash('status', 'Applicant Diterima!');
+
         return redirect()->back();
     }
 
@@ -257,7 +259,7 @@ class UserController extends Controller
             'image_path' => $imageName,
         ]);
 
-        session()->flash('status', 'Profile Picture Changed!');
+        session()->flash('statusSuccess', 'Profile Picture Changed!');
         return redirect()->back();
     }
 
@@ -283,7 +285,7 @@ class UserController extends Controller
             'address' => $request->user_address,
         ]);
 
-        session()->flash('status', 'User Info Changed!');
+        session()->flash('statusSuccess', 'User Info Changed!');
         return redirect()->back();
     }
 
@@ -308,7 +310,7 @@ class UserController extends Controller
             'worker_preference' => $request->worker_preference,
         ]);
 
-        session()->flash('status', 'Worker Info Changed!');
+        session()->flash('statusSuccess', 'Worker Info Changed!');
         return redirect()->back();
     }
 
@@ -332,7 +334,7 @@ class UserController extends Controller
             'employer_address' => $request->employer_address,
         ]);
 
-        session()->flash('status', 'Employer Info Changed!');
+        session()->flash('statusSuccess', 'Employer Info Changed!');
         return redirect()->back();
     }
 
