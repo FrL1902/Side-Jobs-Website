@@ -58,10 +58,16 @@ class UserController extends Controller
             // dd(2);
         }
 
+        $jobCount = DB::table('jobs')
+            ->where('employer_id', auth()->user()->id)->count();
+
+        if($jobCount == 0){
+            $jobCount = '0';
+        }
         // dd($cities);
         // dd($userInfo);
 
-        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo', 'cities'));
+        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo', 'cities', 'jobCount'));
     }
 
     public function user_login(Request $request)
@@ -328,5 +334,24 @@ class UserController extends Controller
 
         session()->flash('status', 'Employer Info Changed!');
         return redirect()->back();
+    }
+
+    public function view_user_profile($id){
+        $userData = User::find($id);
+        $workerInfo = Worker::where('user_email',  $userData->email)->first();
+        $employerInfo = Employer::where('user_email',  $userData->email)->first();
+        $userInfo = DB::table('users')
+            ->join('cities', 'users.city_id', '=', 'cities.id')
+            ->select('users.*', 'cities.city_name')
+            ->where('users.id',  $id)->first();
+
+        $jobCount = DB::table('jobs')
+            ->where('employer_id', $userData->id)->count();
+
+        if($jobCount == 0){
+            $jobCount = '0';
+        }
+
+        return view('userProfiles', compact('userInfo', 'workerInfo', 'employerInfo', 'jobCount'));
     }
 }

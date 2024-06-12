@@ -65,7 +65,7 @@
                                 aria-label="Disabled input example" disabled>
                                 </div>
                                 <div style="width:15% align-end">
-                                    <a class="btn btn-primary" href="">See Profile</a>
+                                    <a class="btn btn-primary" href="/profile/view/{{$jobInfo->employer_id}}">See Profile</a>
                                 </div>
                             </div>
                         </div>

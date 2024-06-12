@@ -122,7 +122,7 @@
                             </div>
                             <div class="mt-2">
                                 <span>Jobs Opened</span>
-                                <p>12345</p>
+                                <p>{{$jobCount}}</p>
                             </div>
                         @else
 
