@@ -126,7 +126,7 @@ class JobController extends Controller
 
         $job->save();
 
-        session()->flash('status', 'New Job Made!');
+        session()->flash('statusSuccess', 'New Job Made!');
         return redirect()->back();
     }
 

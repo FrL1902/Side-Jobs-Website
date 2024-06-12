@@ -22,59 +22,71 @@
             <div style="width:50%; padding-bottom: 20px;">
                 <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
                     <div class="p-2 mb-1 text-center" style="height: 8%;">
-                        <h5>Active jobs</h5>
+                        <h5>Active jobs ({{count($activeJobs)}})</h5>
                     </div>
-                    @foreach ($activeJobs as $data)
-                        <div class="d-flex flex-row mb-3" style="height: 50%;border-radius: 10px;
-                        border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
-                            <div class="text-start" style="height: 100%; width:60%">
-                                <h6>{{$data->job_title}}</h6>
-                                <p>{{$data->job_description}}</p>
+                    @if (count($activeJobs)>0)
+                        @foreach ($activeJobs as $data)
+                            <div class="d-flex flex-row mb-3" style="height: 50%;border-radius: 10px;
+                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                <div class="text-start" style="height: 100%; width:60%">
+                                    <h6>{{$data->job_title}}</h6>
+                                    <p>{{$data->job_description}}</p>
+                                </div>
+                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                border: 2px solid #000000;">
+                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>Status:</strong>
+                                        @if ($data->job_status == 'opened')
+                                            <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                        @else
+                                            <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
+                                        @endif
+                                    </p>
+                                </div>
                             </div>
-                            <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
-                            border: 2px solid #000000;">
-                                <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
-                                <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
-                                <p style="font-size:15px"><strong>Status:</strong>
-                                    @if ($data->job_status == 'opened')
-                                        <strong style="color: rgb(0, 198, 0)">Opened</strong>
-                                    @else
-                                        <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
-                                    @endif
-                                </p>
-                            </div>
+                        @endforeach
+                    @else
+                        <div class="p-2 mb-1 text-center" style="height: 8%;">
+                            <p>no data</p>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
             </div>
             <div style="width:50%; padding-bottom: 20px;">
                 <div class="d-flex flex-column" style="height: 100%; border-left: 1px solid rgb(130, 130, 130); padding:10px">
                     <div class="p-2 mb-1 text-center" style="height: 8%;">
-                        <h5>Past jobs</h5>
+                        <h5>Past jobs ({{count($pastJobs)}})</h5>
                     </div>
-                    @foreach ($pastJobs as $data)
-                        <div class="d-flex flex-row mb-3" style="height: 50%;border-radius: 10px;
-                        border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
-                            <div class="text-start" style="height: 100%; width:60%">
-                                <h6>{{$data->job_title}}</h6>
-                                <p>{{$data->job_description}}</p>
+                    @if (count($pastJobs)>0)
+                        @foreach ($pastJobs as $data)
+                            <div class="d-flex flex-row mb-3" style="height: 50%;border-radius: 10px;
+                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                <div class="text-start" style="height: 100%; width:60%">
+                                    <h6>{{$data->job_title}}</h6>
+                                    <p>{{$data->job_description}}</p>
+                                </div>
+                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                border: 2px solid #000000;">
+                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>Status:</strong>
+                                        @if ($data->job_status == 'finished')
+                                            <strong style="color: rgb(0, 89, 198)">Finished</strong>
+                                        @else
+                                            <strong style="color: rgb(198, 23, 0)">Cancelled</strong>
+                                        @endif
+                                    </p>
+                                </div>
                             </div>
-                            <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
-                            border: 2px solid #000000;">
-                                <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
-                                <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
-                                <p style="font-size:15px"><strong>Status:</strong>
-                                    @if ($data->job_status == 'finished')
-                                        <strong style="color: rgb(0, 89, 198)">Finished</strong>
-                                    @else
-                                        <strong style="color: rgb(198, 23, 0)">Cancelled</strong>
-                                    @endif
-                                </p>
-                            </div>
+                        @endforeach
+                    @else
+                        <div class="p-2 mb-1 text-center" style="height: 8%;">
+                            <p>no data</p>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
             </div>
         </div>
