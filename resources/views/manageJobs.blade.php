@@ -18,7 +18,7 @@
     @endauth
 
     @if (auth()->user()->role == 2)
-        <div class="container d-flex flex-row" style="height:70vh; width:100%">
+        <div class="container d-flex flex-row" style="min-height:70vh; width:100%">
             <div style="width:50%; padding-bottom: 20px;">
                 <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
                     <div class="p-2 mb-1 text-center" style="height: 8%;">
@@ -44,6 +44,7 @@
                                             <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
                                         @endif
                                     </p>
+                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white;" href="/jobInfo/{{$data->id}}">View Job</a>
                                 </div>
                             </div>
                         @endforeach
@@ -97,13 +98,13 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Employer Info</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Make Job</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form enctype="multipart/form-data" method="post" action="/makeJob">
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group mt-3">
+                    <div class="form-group">
                         <label for="supplier">Job Title</label>
                         <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
                             placeholder="Title" value="" id="employer_address"

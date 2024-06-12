@@ -63,4 +63,12 @@ class User extends Authenticatable
 
         return $userName;
     }
+
+    public static function seeWorker($id)
+    {
+        $user = User::find($id);
+        $userName = $user->first_name . ' ' . $user->last_name;
+
+        return $userName;
+    }
 }

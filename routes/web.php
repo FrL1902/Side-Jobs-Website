@@ -55,3 +55,5 @@ Route::get('/profile/view/{id}', [UserController::class, 'view_user_profile']);
 Route::get('/manageJobs', [JobController::class, 'manage_jobs_page']);
 Route::post('/makeJob', [JobController::class, 'make_job']);
 Route::get('/viewJob/{id}', [JobController::class, 'view_job']);
+Route::get('/jobInfo/{id}', [JobController::class, 'job_info']);
+Route::post('/applyJob', [JobController::class, 'apply_job']);

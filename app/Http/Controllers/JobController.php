@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appliers;
 use App\Models\City;
 use App\Models\Job;
 use Illuminate\Http\Request;
@@ -134,5 +135,33 @@ class JobController extends Controller
         $jobInfo = Job::find($id);
 
         return view('viewJob', compact('jobInfo'));
+    }
+
+    public function job_info($id){
+        $jobInfo = Job::find($id);
+        $appliers = Appliers::where('job_id', $jobInfo->id)->get();
+
+        return view('jobinfo', compact('jobInfo', 'appliers'));
+    }
+
+    public function apply_Job(Request $request){
+        $request->validate([
+            'job_message' => 'required|min:2|max:250',
+        ], [
+            'job_message.required' => 'message harus diisi',
+            'job_message.min' => 'message minimal 2 karakter',
+            'job_message.max' => 'message maksimal 250 karakter',
+        ]);
+
+        $applier = new Appliers();
+        $applier->worker_id = $request->applierIdHidden;
+        $applier->job_id = $request->jobIdHidden;
+        $applier->apply_description = $request->job_message;
+        $applier->status = 'applying';
+        $applier->save();
+
+        session()->flash('statusSuccess', 'Applied to job!');
+
+        return redirect()->back();
     }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('worker_id');
             $table->string('job_id');
             $table->string('apply_description');
+            $table->string('status');
             $table->timestamps();
         });
     }
