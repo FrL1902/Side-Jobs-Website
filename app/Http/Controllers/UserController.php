@@ -342,10 +342,10 @@ class UserController extends Controller
         $userData = User::find($id);
         $workerInfo = Worker::where('user_email',  $userData->email)->first();
         $employerInfo = Employer::where('user_email',  $userData->email)->first();
-        $userInfo = DB::table('users')
-            ->join('cities', 'users.city_id', '=', 'cities.id')
-            ->select('users.*', 'cities.city_name')
-            ->where('users.id',  $id)->first();
+        // $userInfo = DB::table('users')
+        //     ->join('cities', 'users.city_id', '=', 'cities.id')
+        //     ->select('users.*', 'cities.city_name')
+        //     ->where('users.id',  $userData->id)->first();
 
         $jobCount = DB::table('jobs')
             ->where('employer_id', $userData->id)->count();
@@ -354,6 +354,7 @@ class UserController extends Controller
             $jobCount = '0';
         }
 
-        return view('userProfiles', compact('userInfo', 'workerInfo', 'employerInfo', 'jobCount'));
+        // dd($userInfo);
+        return view('userProfiles', compact('userData', 'workerInfo', 'employerInfo', 'jobCount')); //ganti dari userinfo ke userdata, gajelas kenapa ga bisa anjing
     }
 }
