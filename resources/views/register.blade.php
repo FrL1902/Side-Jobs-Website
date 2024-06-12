@@ -46,7 +46,10 @@
                     </div>
                 </div>
             </form>
-            <a class="text-end" href="/loginPage" style>already have an account?</a>
+            <div class="d-flex justify-content-between">
+                <a href="/loginPage" style>already have an account?</a>
+                <a href="/" style>return to home page</a>
+            </div>
         </div>
     </main>
 

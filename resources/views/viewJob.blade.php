@@ -10,7 +10,7 @@
             </a>
         </div>
     </header>
-    <div class="container" style="min-height:95vh">
+    <div class="container" style="min-height:100vh">
         <div class="row d-flex justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -74,9 +74,19 @@
                             <input class="form-control" type="text" placeholder="asdf"
                                         aria-label="Disabled input example" disabled>
                         </div>
-                        <div class="card mt-4">
-                            <button class="btn btn-success">Apply to job</button>
-                        </div>
+                        @if (Auth::check())
+                            <div class="form-group mt-4" style="width:100%">
+                                <a href="#" class="btn btn-success" style="width:100%">Apply to job</a>
+                            </div>
+                        @else
+                            <div class="form-group mt-4" style="width:100%">
+                                <a href="/loginPage" class="btn btn-success" style="width:100%">Apply to job</a>
+                            </div>
+                        @endif
+                        {{-- <div class="card mt-4">
+                            <a href="#" class="btn btn-success">Apply to job</a>
+                        </div> --}}
+                        {{-- <button class="btn btn-success">Apply to job</button> --}}
                     </div>
                 </div>
             </div>
