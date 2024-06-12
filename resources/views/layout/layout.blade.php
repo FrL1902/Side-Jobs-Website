@@ -18,6 +18,54 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
+
+<style>
+.alert{
+    background: #ffdb9b;
+    padding:20px 40px;
+    min-width: 420px;
+    position: fixed;
+    right:0px;
+    top:10px;
+    border-radius: 4px;
+    border-left: 8px solid #ffa502;
+    margin-top:75px
+}
+
+.alert .close-btn{
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    padding: 20px 18px;
+    cursor: pointer;
+}
+
+.alert.show{
+    animation: show_slide 1s ease forwards;
+}
+@keyframes show_slide {
+    0%{
+        transform: translateX(100%);
+    }
+    40%{
+        transform: translateX(-10%);
+    }
+    80%{
+        transform: translateX(0%);
+    }
+    100%{
+        transform: translateX(-10px);
+    }
+}
+
+.alert.hide{
+    display:none;
+}
+
+</style>
+
 <body>
     <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
         <div class="container">
@@ -118,11 +166,42 @@
     </nav>
 
     <main>
-        @if ($errors->any())
-            <p class="text-center text-danger">{{ $errors->first() }}</p>
-        @endif
-        @if (session('status'))
-            <p class="text-center text-primary">{{ session('status') }}</p>
+        {{-- @if ($errors->any())
+        <p class="text-center text-danger">{{ $errors->first() }}</p>
+        @endif --}}
+        @if (session('statusSuccess'))
+        {{-- <p class="text-center text-primary">{{ session('status') }}</p> --}}
+        <div class="alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">{{ session('statusSuccess') }}</span>
+            <div class="close-btn" style="background: #02ff0a;">
+                <span style="font-size:17px"><strong>x</strong></span>
+            </div>
+        </div>
+        @elseif (session('statusWarning'))
+        <div class="alert show" style="background: #ffde9b;border-left: 8px solid #ff9e02;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">{{ session('statusWarning') }}</span>
+            <div class="close-btn" style="background: #ff9e02;">
+                <span style="font-size:17px"><strong>x</strong></span>
+            </div>
+        </div>
+        @elseif (session('statusFailed'))
+        <div class="alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">{{ session('statusFailed') }}</span>
+            <div class="close-btn" style="background: #ff3d02;">
+                <span style="font-size:17px"><strong>x</strong></span>
+            </div>
+        </div>
+        @elseif ($errors->any())
+        <div class="alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">{{ $errors->first() }}</span>
+            <div class="close-btn" style="background: #ff3d02;">
+                <span style="font-size:17px"><strong>x</strong></span>
+            </div>
+        </div>
         @endif
         @yield('content')
     </main>
@@ -185,6 +264,13 @@
                 //     ]
                 //
             });
+        });
+    </script>
+
+    <script>
+        $('.close-btn').click(function(){
+            $('.alert').addClass("hide");
+            $('.alert').removeClass("show");
         });
     </script>
 
