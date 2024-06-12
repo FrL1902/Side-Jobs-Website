@@ -87,7 +87,7 @@
             <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     @if (auth()->user()->image_path == '-')
-                        <img src="https://cdn.discordapp.com/attachments/1211571942965125160/1248652686350483506/image.png?ex=6665c36f&is=666471ef&hm=a6f77486ba2416785ba3f3dabc9152dc9a6169213de3ca343b65958142c7d778&" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="https://media.istockphoto.com/id/1300845620/id/vektor/ikon-pengguna-datar-terisolasi-pada-latar-belakang-putih-simbol-pengguna-ilustrasi-vektor.jpg?s=612x612&w=0&k=20&c=QN0LOsRwA1dHZz9lsKavYdSqUUnis3__FQLtZTQ--Ro=" alt="mdo" width="32" height="32" class="rounded-circle">
                     @else
                         <img src="{{ Storage::url(auth()->user()->image_path) }}" alt="mdo" width="32" height="32" class="rounded-circle">
                     @endif
