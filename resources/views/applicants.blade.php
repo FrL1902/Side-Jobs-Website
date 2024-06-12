@@ -75,29 +75,31 @@
                                     data-bs-target="#decideModal"
                                     data-bs-toggle="modal"
                                     data-pic_url="{{ $data->id }}"
-                                    >Decide</button></td>
+                                    >Decide</button>
+
+                                    <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Employer Applicant</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Apakah user "{{$data->user_email}}" cocok untuk menjadi employer / pemberi pekerja?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="/declineApplicant/{{$data->user_email}}" class="btn btn-danger">Tidak</a>
+                                                <a href="/acceptApplicant/{{$data->user_email}}" class="btn btn-primary">Ya</a>
+                                                {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                                                <button type="button" class="btn btn-primary">Ya</button> --}}
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                                 @endif
                             </tr>
                             {{-- modal --}}
-                            <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Employer Applicant</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Apakah user "{{$data->user_email}}" cocok untuk menjadi employer / pemberi pekerja?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a href="/declineApplicant/{{$data->user_email}}" class="btn btn-danger">Tidak</a>
-                                        <a href="/acceptApplicant/{{$data->user_email}}" class="btn btn-primary">Ya</a>
-                                        {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
-                                        <button type="button" class="btn btn-primary">Ya</button> --}}
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
                         @endforeach
                     </tbody>
                 </table>
