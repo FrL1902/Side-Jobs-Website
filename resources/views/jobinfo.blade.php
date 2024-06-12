@@ -133,7 +133,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Apakah anda ingin "" sebagai pekerja untuk pekerjaan ini?
+                                                    Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="/declineApplicant/" class="btn btn-danger">Tidak</a>
