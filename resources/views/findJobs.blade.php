@@ -64,53 +64,42 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Employer Info</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Job</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form enctype="multipart/form-data" method="post" action="/makeJob">
             @csrf
             <div class="modal-body">
+                <div class="form-group">
+                    <label for="">Check the box if job is online</label>
+                    <input type="checkbox" id="" name="">
+                </div>
                 <div class="form-group mt-3">
-                    <label for="supplier">Job Title</label>
+                    <label for="supplier">Job name</label>
                     <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
-                        placeholder="Title" value="" id="employer_address"
+                        placeholder="what kind of job?" value="" id="name"
                         name="employer_address">
                 </div>
                 <div class="form-group mt-3">
-                    <label for="job_description">Description</label>
-                    <textarea class="form-control" rows="3" name="job_description" id="job_description" placeholder="your job's description" style="border-color: #aaaaaa"></textarea>
+                    <label for="supplier">Job Area</label>
+                    <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                        placeholder="Choose a city" value="" id="employer_address"
+                        name="employer_address">
                 </div>
                 <div class="form-group mt-3">
-                    <label for="compensation">Job Compensation</label>
+                    <label for="compensation">Compensation Minimum</label>
                     <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation" min="0">
                 </div>
                 <div class="form-group mt-3">
-                    <label for="job_type">Check the box if job is online</label>
-                    <input type="checkbox" id="job_type" name="job_type">
-                </div>
-                <div class="form-group mt-3" id="address_field">
-                    <label for="customerLabelExportBrand">City</label>
-                    <select class="form-control" id="customerLabelExportBrand"
-                        data-width="100%" name="city">
-                        <option></option>
-                        {{-- @foreach ($city as $data)
-                            <option value="{{ $data->id }}">      HARUS ADA FILTER BY CITY (all, terus baru terserah), TYPE JOB (OFFLINE ATO ONLINE) checklist aja(), COMPENSATION INTERVAL DARI BRP SAMPE BRP
-                                {{ $data->city_name }}
-                            </option>
-                        @endforeach --}}
-                    </select>
-
-                    <label for="address" class="mt-3">Address</label>
-                    <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
-                        placeholder="Address" value="" id="address"
-                        name="address">
+                    <label for="compensation">Compensation Maximum</label>
+                    <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation" min="0">
                 </div>
                 <div class="form-group mt-3">
-                    <label for="deadline">Deadline</label>
+                    <label for="deadline">Deadline Before</label>
                     <input type="date" class="form-control form-control-sm" style="border-color: #aaaaaa" id="deadline" name="deadline">
                 </div>
                 <div class="d-flex flex-row-reverse mt-4">
-                    <button type="submit" class="btn btn-primary">Make Job</button>
+                    <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </div>
             </form>
