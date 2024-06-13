@@ -137,76 +137,81 @@
             </div> --}}
         </div>
         @auth
-        <div class="container d-flex flex-row" style="min-height:70vh; width:100%">
-            <div style="width:50%; padding-bottom: 20px;">
-                <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
-                    <div class="p-2 mb-1 text-center" style="height: 8%;">
-                        <h5>Your Active jobs</h5>
-                    </div>
-                    @if (count($activeJobs)>0)
-                        @foreach ($activeJobs as $data)
-                            <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
-                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
-                                <div class="text-start" style="height: 100%; width:60%">
-                                    <h6>{{$data->job_title}}</h6>
-                                    <p>{{$data->job_description}}</p>
-                                </div>
-                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
-                                border: 2px solid #000000;">
-                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
-                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
-                                    <p style="font-size:15px"><strong>Status:</strong>
-                                        @if ($data->job_status == 'opened')
-                                            <strong style="color: rgb(0, 198, 0)">Opened</strong>
-                                        @else
-                                            <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
-                                        @endif
-                                    </p>
-                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
-                                </div>
+            @if (auth()->user()->role != 3)
+                <div class="container d-flex flex-row" style="min-height:70vh; width:100%">
+                    <div style="width:50%; padding-bottom: 20px;">
+                        <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
+                            <div class="p-2 mb-1 text-center" style="height: 8%;">
+                                <h5>Your Active jobs</h5>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="p-2 mb-1 text-center" style="height: 8%;">
-                            <p>no data</p>
+                            @if (count($activeJobs)>0)
+                                @foreach ($activeJobs as $data)
+                                    <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
+                                    border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                        <div class="text-start" style="height: 100%; width:60%">
+                                            <h6>{{$data->job_title}}</h6>
+                                            <p>{{$data->job_description}}</p>
+                                        </div>
+                                        <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                        border: 2px solid #000000;">
+                                            <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                            <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                            <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                            <p style="font-size:15px"><strong>Status:</strong>
+                                                @if ($data->job_status == 'opened')
+                                                    <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                                @else
+                                                    <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
+                                                @endif
+                                            </p>
+                                            <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="p-2 mb-1 text-center" style="height: 8%;">
+                                    <p>no data</p>
+                                </div>
+                            @endif
                         </div>
-                    @endif
-                </div>
-            </div>
-            <div style="width:50%; padding-bottom: 20px;">
-                <div class="d-flex flex-column" style="height: 100%; border-left: 1px solid rgb(130, 130, 130); padding:10px">
-                    <div class="p-2 mb-1 text-center" style="height: 8%;">
-                        <h5>Newly Posted Jobs</h5>
                     </div>
-                    @if (count($availableJobs)>0)
-                        @foreach ($availableJobs as $data)
-                            <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
-                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
-                                <div class="text-start" style="height: 100%; width:60%">
-                                    <h6>{{$data->job_title}}</h6>
-                                    <p>{{$data->job_description}}</p>
-                                </div>
-                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
-                                border: 2px solid #000000;">
-                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
-                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
-                                    <p style="font-size:15px"><strong>Status:</strong>
-                                        <strong style="color: rgb(0, 198, 0)">Opened</strong>
-                                    </p>
-                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
-                                </div>
+                    <div style="width:50%; padding-bottom: 20px;">
+                        <div class="d-flex flex-column" style="height: 100%; border-left: 1px solid rgb(130, 130, 130); padding:10px">
+                            <div class="p-2 mb-1 text-center" style="height: 8%;">
+                                <h5>Newly Posted Jobs</h5>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="p-2 mb-1 text-center" style="height: 8%;">
-                            <p>no data</p>
+                            @if (count($availableJobs)>0)
+                                @foreach ($availableJobs as $data)
+                                    <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
+                                    border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                        <div class="text-start" style="height: 100%; width:60%">
+                                            <h6>{{$data->job_title}}</h6>
+                                            <p>{{$data->job_description}}</p>
+                                        </div>
+                                        <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                        border: 2px solid #000000;">
+                                            <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                            <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                            <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                            <p style="font-size:15px"><strong>Status:</strong>
+                                                <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                            </p>
+                                            <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="p-2 mb-1 text-center" style="height: 8%;">
+                                    <p>no data</p>
+                                </div>
+                            @endif
                         </div>
-                    @endif
+                    </div>
                 </div>
-            </div>
-        </div>
+            @else
+                <div class="container" style="min-height:70vh; width:100%">
+                </div>
+            @endif
         @endauth
         @guest
         <div style="width:100%; padding-bottom: 20px;">

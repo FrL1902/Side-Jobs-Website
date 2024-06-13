@@ -15,7 +15,7 @@ class HomeController extends Controller
         })
         ->latest()->take(2)->get();
 
-        if(Auth::check()){
+        if(Auth::check() && auth()->user()->role != 3){
             if(auth()->user()->role == 1){ //worker
                 $activeJobs = Job::where('worker_id', auth()->user()->id)
                     ->where(function($query) {
