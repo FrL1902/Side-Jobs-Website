@@ -24,19 +24,36 @@ class JobController extends Controller
     {
         $city = City::all();
 
-        $activeJobs = Job::where('employer_id', auth()->user()->id)
-                    ->where(function($query) {
-                        $query->where('job_status', 'opened')
-                            ->orWhere('job_status', 'ongoing');
-                    })
-                    ->latest()->take(2)->get();
+        if(auth()->user()->role == 1){
+            $activeJobs = Job::where('worker_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'opened')
+                        ->orWhere('job_status', 'ongoing');
+                })
+                ->latest()->take(2)->get();
 
-        $pastJobs = Job::where('employer_id', auth()->user()->id)
-                    ->where(function($query) {
-                        $query->where('job_status', 'finished')
-                            ->orWhere('job_status', 'cancelled');
-                    })
-                    ->latest()->take(2)->get();
+            $pastJobs = Job::where('worker_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'finished')
+                        ->orWhere('job_status', 'cancelled');
+                })
+                ->latest()->take(2)->get();
+
+        } else if(auth()->user()->role == 2){
+            $activeJobs = Job::where('employer_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'opened')
+                        ->orWhere('job_status', 'ongoing');
+                })
+                ->latest()->take(2)->get();
+
+            $pastJobs = Job::where('employer_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'finished')
+                        ->orWhere('job_status', 'cancelled');
+                })
+                ->latest()->take(2)->get();
+        }
         // dd($job);
 
 
