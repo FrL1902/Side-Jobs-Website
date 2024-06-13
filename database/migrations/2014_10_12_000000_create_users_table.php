@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('account_activated');
             $table->string('image_path');
+            $table->string('bank_id');
+            $table->string('account_number');
             $table->rememberToken();
             $table->timestamps();
         });
