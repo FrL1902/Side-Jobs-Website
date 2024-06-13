@@ -13,11 +13,15 @@
                     {{-- <a type="button" class="btn align-middle mt-3 btn-primary" href="/#" style="height:100%">Manage your jobs</a> --}}
                     <button type="button" style="height:100%" class="btn btn-primary" data-bs-target="#makeJobModal"data-bs-toggle="modal">Make New Job</button>
                 @endif
+                @if (Auth::user()->role == 1)
+                    {{-- <a type="button" class="btn align-middle mt-3 btn-primary" href="/#" style="height:100%">Manage your jobs</a> --}}
+                    <a href="/userApplies/{{auth()->user()->id}}" style="height:100%" class="btn btn-primary">See Job Applies</a>
+                @endif
             </div>
         </header>
     @endauth
 
-    @if (auth()->user()->role == 2)
+    {{-- @if (auth()->user()->role == 2) --}}
         <div class="container d-flex flex-row" style="min-height:70vh; width:100%">
             <div style="width:50%; padding-bottom: 20px;">
                 <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
@@ -44,7 +48,7 @@
                                             <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
                                         @endif
                                     </p>
-                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white;" href="/jobInfo/{{$data->id}}">View Job</a>
+                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
                                 </div>
                             </div>
                         @endforeach
@@ -80,6 +84,7 @@
                                             <strong style="color: rgb(198, 23, 0)">Cancelled</strong>
                                         @endif
                                     </p>
+                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
                                 </div>
                             </div>
                         @endforeach
@@ -91,9 +96,9 @@
                 </div>
             </div>
         </div>
-    @endif
+    {{-- @endif --}}
 
-
+        {{-- make job modal --}}
     <div class="modal fade" id="makeJobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
