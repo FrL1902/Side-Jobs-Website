@@ -33,7 +33,11 @@
                                 style="width: 100%; height: 200px" class="card-img-top" alt="..."> --}}
                             <div class="card-body">
                                 <h6 class="my-2">{{ $data->first_name . ' ' . $data->first_name }}</h6>
-                                <h6 class="text-secondary">Location: {{App\Models\City::seeCity($data->city_id)}}</h6>
+                                @if ($data->city_id == '-')
+                                    <h6 class="text-secondary">Location: -</h6>
+                                @else
+                                    <h6 class="text-secondary">Location: {{App\Models\City::seeCity($data->city_id)}}</h6>
+                                @endif
                                 <p class="card-text text-black" style="margin-top: 60px">Account Created: {{date_format(date_create($data->created_at), 'd-M-Y')}}</p>
                             </div>
                         </div>
