@@ -145,6 +145,11 @@ class JobController extends Controller
     }
 
     public function apply_Job(Request $request){
+        if(auth()->user()->bank_id == '-'){
+            session()->flash('statusFailed', 'Failed, please set up your user profile first');
+            return redirect()->back();
+        }
+
         $request->validate([
             'job_message' => 'required|min:2|max:250',
         ], [
@@ -192,5 +197,16 @@ class JobController extends Controller
 
         session()->flash('statusSuccess', 'Worker Accepted!');
         return redirect()->back();
+    }
+
+    public function cancel_job($id){
+        // dd($id);
+        Job::where('id', $id)->update([
+            'job_status' => 'cancelled',
+            'is_active' => 'no',
+        ]);
+
+        session()->flash('statusSuccess', 'Job Cancelled!');
+        return redirect('/manageJobs');
     }
 }
