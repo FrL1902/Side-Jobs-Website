@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'city_id' => 1,
             'address' => 'jakarta',
             'account_activated' => 'yes',
-            'image_path' => 'https://cdn.discordapp.com/attachments/1211571942965125160/1244616830744530944/image.png?ex=66566c00&is=66551a80&hm=b5df70e02b873174ec84debad2d0d360c34217178046057ce80232cd0c2721d3&',
+            'image_path' => '-',
             'bank_id' => '-',
             'account_number' => '-',
         ], [
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             'city_id' => 2,
             'address' => 'bekasi',
             'account_activated' => 'yes',
-            'image_path' => 'https://cdn.discordapp.com/attachments/1211571942965125160/1244616830744530944/image.png?ex=66566c00&is=66551a80&hm=b5df70e02b873174ec84debad2d0d360c34217178046057ce80232cd0c2721d3&',
+            'image_path' => '-',
             'bank_id' => '-',
             'account_number' => '-',
         ], [
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             'city_id' => 2,
             'address' => 'gamprit',
             'account_activated' => 'yes',
-            'image_path' => 'https://cdn.discordapp.com/attachments/1211571942965125160/1244616830744530944/image.png?ex=66566c00&is=66551a80&hm=b5df70e02b873174ec84debad2d0d360c34217178046057ce80232cd0c2721d3&',
+            'image_path' => '-',
             'bank_id' => '-',
             'account_number' => '-',
         ]]);
