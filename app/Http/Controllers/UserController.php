@@ -18,7 +18,7 @@ class UserController extends Controller
     public function search_user_page()
     {
         return view('findUsers', [
-            'users' => DB::table('users')->simplePaginate(2)
+            'users' => DB::table('users')->simplePaginate(3)
         ]);
     }
 
