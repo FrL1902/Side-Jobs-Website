@@ -136,38 +136,112 @@
                 <button type="submit" class="btn" style="color:white; background-color: rgb(256,212,76)">Search more jobs</button>
             </div> --}}
         </div>
-
-        @if (Auth::check() && Auth::user()->role == 3)
-            <div style="height:70vh">
-
-            </div>
-        @else
-            <div class="d-flex flex-column">
-                <div class="d-flex row flex-wrap mt-2 justify-content-start mb-4">
-
-
-                    <div class="col-3">
-                        <a href="xxx" style="text-decoration: none;">
-                            <div class="card my-1" style="width: 18rem; height: 30rem">
-                                <img src="https://cdn.discordapp.com/attachments/1211571942965125160/1244616830744530944/image.png?ex=66566c00&is=66551a80&hm=b5df70e02b873174ec84debad2d0d360c34217178046057ce80232cd0c2721d3&"
-                                    style="width: 100%; height: 200px" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h6 class="my-2">name</h6>
-                                    <p class="card-text text-black">deadline</p>
-                                    <h6 class="text-secondary">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet sequi sit voluptate</h6>
+        @auth
+        <div class="container d-flex flex-row" style="min-height:70vh; width:100%">
+            <div style="width:50%; padding-bottom: 20px;">
+                <div class="d-flex flex-column" style="height: 100%; border-right: 1px solid rgb(130, 130, 130); padding:10px">
+                    <div class="p-2 mb-1 text-center" style="height: 8%;">
+                        <h5>Your Active jobs</h5>
+                    </div>
+                    @if (count($activeJobs)>0)
+                        @foreach ($activeJobs as $data)
+                            <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
+                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                <div class="text-start" style="height: 100%; width:60%">
+                                    <h6>{{$data->job_title}}</h6>
+                                    <p>{{$data->job_description}}</p>
                                 </div>
-                                <div class="card-footer bg-transparent flex-row d-flex justify-content-between">
-                                    <div class="text-secondary">Pay: Rp 25000000</div>
+                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                border: 2px solid #000000;">
+                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>Status:</strong>
+                                        @if ($data->job_status == 'opened')
+                                            <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                        @else
+                                            <strong style="color: rgb(198, 148, 0)">Ongoing</strong>
+                                        @endif
+                                    </p>
+                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-
-
+                        @endforeach
+                    @else
+                        <div class="p-2 mb-1 text-center" style="height: 8%;">
+                            <p>no data</p>
+                        </div>
+                    @endif
                 </div>
             </div>
-        @endif
-
+            <div style="width:50%; padding-bottom: 20px;">
+                <div class="d-flex flex-column" style="height: 100%; border-left: 1px solid rgb(130, 130, 130); padding:10px">
+                    <div class="p-2 mb-1 text-center" style="height: 8%;">
+                        <h5>Newly Posted Jobs</h5>
+                    </div>
+                    @if (count($availableJobs)>0)
+                        @foreach ($availableJobs as $data)
+                            <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
+                            border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                                <div class="text-start" style="height: 100%; width:60%">
+                                    <h6>{{$data->job_title}}</h6>
+                                    <p>{{$data->job_description}}</p>
+                                </div>
+                                <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                                border: 2px solid #000000;">
+                                    <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                    <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>Status:</strong>
+                                        <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                    </p>
+                                    <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/jobInfo/{{$data->id}}">View Job</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="p-2 mb-1 text-center" style="height: 8%;">
+                            <p>no data</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endauth
+        @guest
+        <div style="width:100%; padding-bottom: 20px;">
+            <div class="d-flex flex-column" style="height: 100%; padding:10px">
+                <div class="p-2 mb-1 text-center" style="height: 8%;">
+                    <h5>Newly Posted Jobs</h5>
+                </div>
+                @if (count($availableJobs)>0)
+                    @foreach ($availableJobs as $data)
+                        <div class="d-flex flex-row mb-3" style="height: 220px;border-radius: 10px;
+                        border: 4px solid #272727; background-color:#f8f8f8; padding:10px">
+                            <div class="text-start" style="height: 100%; width:60%">
+                                <h6>{{$data->job_title}}</h6>
+                                <p>{{$data->job_description}}</p>
+                            </div>
+                            <div class="text-start" style="height: 100%; width:40%; background-color:rgb(255, 255, 255); padding:5px; border-radius: 10px;
+                            border: 2px solid #000000;">
+                                <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
+                                <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
+                                <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                <p style="font-size:15px"><strong>Status:</strong>
+                                    <strong style="color: rgb(0, 198, 0)">Opened</strong>
+                                </p>
+                                <a type="button" class="btn align-middle mt-3 btn-primary" style="color:white; transform: translateY(-30px);" href="/viewJob/{{$data->id}}">View Job</a>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="p-2 mb-1 text-center" style="height: 8%;">
+                        <p>no data</p>
+                    </div>
+                @endif
+            </div>
+        </div>
+        @endguest
     </div>
 </section>
 
