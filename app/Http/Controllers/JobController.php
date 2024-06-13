@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appliers;
+use App\Models\Bank;
 use App\Models\City;
 use App\Models\Job;
+use App\Models\Rating;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -157,8 +160,9 @@ class JobController extends Controller
     public function job_info($id){
         $jobInfo = Job::find($id);
         $appliers = Appliers::where('job_id', $jobInfo->id)->get();
+        $banks = Bank::all();
 
-        return view('jobinfo', compact('jobInfo', 'appliers'));
+        return view('jobinfo', compact('jobInfo', 'appliers', 'banks'));
     }
 
     public function apply_Job(Request $request){
@@ -188,7 +192,6 @@ class JobController extends Controller
     }
 
     public function decline_worker(Request $request){
-
         Appliers::where('worker_id', $request->workerId)->where('job_id', $request->jobId)->update([
             'status' => 'declined',
         ]);
@@ -203,9 +206,9 @@ class JobController extends Controller
             'status' => 'accepted',
         ]);
 
-        Appliers::where('job_id', $request->jobId)->where('status', 'applying')->update([
-            'status' => 'declined',
-        ]);
+        // Appliers::where('job_id', $request->jobId)->where('status', 'applying')->update([
+        //     'status' => 'declined',
+        // ]);
 
         Job::where('id', $request->jobId)->update([
             'job_status' => 'ongoing',
@@ -224,6 +227,52 @@ class JobController extends Controller
         ]);
 
         session()->flash('statusSuccess', 'Job Cancelled!');
+        return redirect('/manageJobs');
+    }
+
+    public function end_job(Request $request){
+        $request->validate([
+            'bank_id' => 'required',
+            'bank_account_number' => 'required|min:3|max:50',
+            'jobCompensation' => 'required',
+            'rating' => 'required|min:0|max:5',
+            'comment' => 'required|min:2|max:250',
+            'jobIdHidden' => 'required',
+
+        ], [
+            'bank_id.required' => '',
+            'bank_account_number.required' => 'rekening bank anda harus diisi',
+            'bank_account_number.min' => 'rekening bank minimal 3 karakter',
+            'bank_account_number.max' => 'rekening bank maksimal 50 karakter',
+            'jobCompensation.required' => 'compensation null error',
+            'rating.required' => 'rating harus diisi',
+            'rating.min' => 'rating minimal 0',
+            'rating.max' => 'rating maksimal 5',
+            'comment.required' => 'comment harus diisi',
+            'comment.min' => 'comment minimal 2 karakter',
+            'comment.max' => 'comment maksimal 250 karakter',
+            'jobIdHidden.required' => 'job id null error',
+        ]);
+
+        Job::where('id', $request->jobIdHidden)->update([
+            'job_status' => 'finished',
+            'is_active' => 'no',
+        ]);
+
+        $ratings = new Rating();
+        $ratings->job_id = $request->jobIdHidden;
+        $ratings->job_rating = $request->rating;
+        $ratings->job_comment = $request->comment;
+        $ratings->save();
+
+        $transaction = new Transaction();
+        $transaction->bank_id = $request->bank_id;
+        $transaction->job_id = $request->jobIdHidden;
+        $transaction->account_number = $request->bank_account_number;
+        $transaction->value = $request->jobCompensation;
+        $transaction->save();
+
+        session()->flash('statusSuccess', 'Job Finished!');
         return redirect('/manageJobs');
     }
 }

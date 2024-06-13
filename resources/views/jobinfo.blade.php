@@ -8,7 +8,7 @@
             <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
                 <h2>Job Info
                     @if ($jobInfo->job_status == 'opened')
-                        <span style="color: rgb(0, 198, 0)">(Opened)</span>
+                        <span style="color: rgb(0, 198, 0)">(opened)</span>
                     @elseif($jobInfo->job_status == 'ongoing')
                         <span style="color: rgb(198, 148, 0)">(ongoing)</span>
                     @elseif($jobInfo->job_status == 'finished')
@@ -19,22 +19,122 @@
                 </h2>
 
             </a>
-            <div>
-                <button type="button"  class="btn btn-primary" data-bs-target="#makeJobModal"data-bs-toggle="modal">Edit Job</button>
-                {{-- <div class="dropdown"> --}}
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Job Status
-                    </button>
-                    <ul class="dropdown-menu">
-                        @if ($jobInfo->job_status == 'ongoing')
-                            <li><a class="dropdown-item" href="#">End Job</a></li>
+            @if (auth()->user()->role == 2)
+                @if ($jobInfo->job_status == 'opened' || $jobInfo->job_status == 'ongoing')
+                    <div>
+                        @if ($jobInfo->job_status == 'opened')
+                            <button type="button"  class="btn btn-primary" data-bs-target="#editJobModal"data-bs-toggle="modal">Edit Job</button>
                         @endif
-                            <li><a class="dropdown-item" href="#">Cancel Job</a></li>
-                    </ul>
-                  {{-- </div> --}}
-            </div>
+                        {{-- <div class="dropdown"> --}}
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Job Status
+                        </button>
+                        <ul class="dropdown-menu">
+                            @if ($jobInfo->job_status == 'ongoing')
+                                <li><a class="dropdown-item" data-bs-target="#endJobModal"data-bs-toggle="modal">End Job</a></li>
+                            @endif
+                            <li><a class="dropdown-item" data-bs-target="#cancelJobModal" data-bs-toggle="modal">Cancel Job</a></li>
+                        </ul>
+                        {{-- </div> --}}
+                    </div>
+                @endif
+            @endif
         </div>
     </header>
+
+    {{-- end job modal --}}
+    <div class="modal fade" id="endJobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Selesaikan Pekerjaan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="/endJob">
+                @csrf
+                    <div class="modal-body">
+                        Anda akan menyelesaikan suatu pekerjaan, apakah anda yakin?<br><br>
+                        Sebelum pekerjaan ditandai sebagai selesai, mohon konfirmasi hasil pekerjaan dengan pekerja anda.
+
+                        {{-- <div class="form-group mt-4">
+                            <label for="bank_id">Bank</label>
+                            <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                                placeholder="your choice of bank" value="" id="bank_id"
+                                name="bank_id">
+                        </div> --}}
+
+                        <div class="form-group mt-3">
+                            <label for="addBankInfo">Nama Bank</label>
+                            <select class="form-control" id="addBankInfo"
+                                data-width="100%" name="bank_id">
+                                <option>your choice of bank</option>
+                                @foreach ($banks as $data)
+                                    <option value="{{ $data->id }}">
+                                        {{ $data->bank_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="bank_account_number">Bank Account Number</label>
+                            <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                                placeholder="your bank account number" value="" id="bank_account_number"
+                                name="bank_account_number">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="largeInput">Compensation</label>
+                            <input class="form-control" type="text" placeholder="{{$jobInfo->job_compensation}}"
+                                aria-label="Disabled input example" disabled>
+                            <input type="hidden" name="jobCompensation" value="{{$jobInfo->job_compensation}}">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="rating">Rating</label>
+                            <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="rating" name="rating" min="0" max="5" step="1">
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="comment">Comment</label>
+                            <textarea class="form-control" rows="3" name="comment" id="comment" style="border-color: #aaaaaa"></textarea>
+                        </div>
+                        <input type="hidden" name="jobIdHidden" value="{{ $jobInfo->id }}">
+                        <div class="d-flex flex-row-reverse mt-4">
+                            <button type="submit" class="btn btn-success">End Job</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right:10px" style="border-color: #aaaaaa">Tidak</button>
+                        </div>
+                    </div>
+                </form>
+
+                {{-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                    <a href="/cancelJob/{{$jobInfo->id}}"  class="btn btn-primary">Pekerjaan Selesai</a>
+                </div> --}}
+            </div>
+        </div>
+    </div>
+
+    {{-- cancel job modal --}}
+    <div class="modal fade" id="cancelJobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Cancel Job</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Anda akan membatalkan suatu pekerjaan, apakah anda yakin?
+            </div>
+            <div class="modal-footer">
+                {{-- <a href="/declineApplicant/" class="btn btn-danger"  data-bs-dismiss="modal">Tidak</a> --}}
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
+                <a href="/cancelJob/{{$jobInfo->id}}"  class="btn btn-warning">Ya</a>
+                {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                <button type="button" class="btn btn-primary">Ya</button> --}}
+            </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container" style="min-height:100vh">
         <div class="row d-flex justify-content-center">
             <div class="col-md-8">
@@ -82,35 +182,50 @@
                                     aria-label="Disabled input example" disabled>
                             </div>
                         @endif
-                        <div class="form-group mb-2">
-                            <label for="largeInput">Employer</label>
-                                <input class="form-control" type="text" placeholder="{{App\Models\User::seeEmployer($jobInfo->employer_id)}}"
-                            aria-label="Disabled input example" disabled>
-                        </div>
-                        {{-- @if (Auth::check())
-                            @if ($jobInfo->employer_id == auth()->user()->id)
-                                <div class="form-group mt-4" style="width:100%">
-                                    <a href="" class="btn btn-danger" style="width:100%">Cannot Apply To Your Own Job</a>
-                                </div>
-                            @else
-                                <div class="form-group mt-4" style="width:100%">
-                                    <a href="#" class="btn btn-success" style="width:100%">Apply To Job</a>
-                                </div>
-                            @endif
-                        @else
-                            <div class="form-group mt-4" style="width:100%">
-                                <a href="/loginPage" class="btn btn-success" style="width:100%">Apply To Job</a>
+                        @if (auth()->user()->role == 2)
+                            <div class="form-group mb-2">
+                                <label for="largeInput">Employer</label>
+                                    <input class="form-control" type="text" placeholder="{{App\Models\User::seeEmployer($jobInfo->employer_id)}}"
+                                aria-label="Disabled input example" disabled>
                             </div>
-                        @endif --}}
-                        {{-- <div class="card mt-4">
-                            <a href="#" class="btn btn-success">Apply to job</a>
-                        </div> --}}
-                        {{-- <button class="btn btn-success">Apply to job</button> --}}
+                        @elseif (auth()->user()->role == 1)
+                            <div class="form-group mb-2">
+                                <label for="largeInput">Employer</label>
+                                <div class="d-flex flex-row">
+                                    <div style="width:88%">
+                                        <input class="form-control" type="text" placeholder="{{App\Models\User::seeEmployer($jobInfo->employer_id)}}"
+                                    aria-label="Disabled input example" disabled>
+                                    </div>
+                                    <div style="width:15% align-end">
+                                        <a class="btn btn-primary" href="/profile/view/{{$jobInfo->employer_id}}">See Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if (auth()->user()->role == 1)
+                            <div class="form-group mb-2">
+                                <label for="largeInput">Worker</label>
+                                    <input class="form-control" type="text" placeholder="{{App\Models\User::seeWorker($jobInfo->worker_id)}} (you)"
+                                aria-label="Disabled input example" disabled>
+                            </div>
+                        @endif
+
+                        <div class="form-group mb-2">
+                            <label for="largeInput">Rating From Employer</label>
+                            <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeRating($jobInfo->id)}}/5"
+                                aria-label="Disabled input example" disabled>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="largeInput">Comment From Employer</label>
+                            <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeComment($jobInfo->id)}}"
+                                aria-label="Disabled input example" disabled>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+        @if (auth()->user()->role == 2)
         {{-- table for job appliers --}}
         <div class="container d-flex flex-wrap justify-content-center" style="min-height: 80vh">
             <div class="card-body">
@@ -143,48 +258,52 @@
                                     <td class="text-start align-middle"><a class="btn btn-primary" href="/profile/view/{{$data->worker_id}}">See Profile</a></td>
                                     {{-- unlocked no, applied yes ||normal --}}
                                     {{-- unlocked yes, applied no ||ga normal || kalo udah unlocked emang harus udah apply dulu, jadi case ini harusnya ga ada --}}
-                                    @if ($data->status == 'applying')
-                                        <td class="text-center align-middle">
-                                            <button type="button" class="btn btn-primary"
-                                            data-bs-target="#decideModal"
-                                            data-bs-toggle="modal"
-                                            >Decide</button>
+                                    {{-- @if ($jobInfo->job_status == 'opened') --}}
+                                        @if ($data->status == 'applying')
+                                            <td class="text-center align-middle">
+                                                <button type="button" class="btn btn-primary"
+                                                data-bs-target="#decideModal"
+                                                data-bs-toggle="modal"
+                                                >Decide</button>
 
-                                            <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <form action="/declineWorker" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
-                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
-                                                            <button type="submit" class="btn btn-danger">Tidak</button>
-                                                        </form>
-                                                        <form action="/acceptWorker" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
-                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
-                                                            <button type="submit" class="btn btn-primary">Ya</button>
-                                                        </form>
-                                                        {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
-                                                        <button type="button" class="btn btn-primary">Ya</button> --}}
-                                                    </div>
+                                                <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="/declineWorker" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                                <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                                <button type="submit" class="btn btn-danger">Tidak</button>
+                                                            </form>
+                                                            <form action="/acceptWorker" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                                <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                                <button type="submit" class="btn btn-primary">Ya</button>
+                                                            </form>
+                                                            {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                                                            <button type="button" class="btn btn-primary">Ya</button> --}}
+                                                        </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    @elseif ($data->status == 'declined')
-                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">declined</td>
-                                    @elseif ($data->status == 'accepted')
-                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(1, 181, 1)">accepted</td>
-                                    @endif
+                                            </td>
+                                        @elseif ($data->status == 'declined')
+                                            <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">declined</td>
+                                        @elseif ($data->status == 'accepted')
+                                            <td class="text-center align-middle" style="font-weight:bold; color:rgb(1, 181, 1)">accepted</td>
+                                        @endif
+                                    {{-- @else
+                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">cancelled</td>
+                                    @endif --}}
                                 </tr>
                             @endforeach
                         </tbody>
@@ -192,6 +311,16 @@
                 </div>
             </div>
         </div>
+        @endif
 </section>
 
+@endsection
+
+@section('script')
+<script>
+    $('#addBankInfo').select2({
+        dropdownParent: $('#endJobModal'),
+        // placeholder: 'Pilih Kota'
+    });
+</script>
 @endsection
