@@ -59,3 +59,5 @@ Route::get('/jobInfo/{id}', [JobController::class, 'job_info']);
 Route::post('/applyJob', [JobController::class, 'apply_job']);
 Route::post('/acceptWorker', [JobController::class, 'accept_worker']);
 Route::post('/declineWorker', [JobController::class, 'decline_worker']);
+Route::get('/cancelJob/{id}', [JobController::class, 'cancel_job']);
+Route::post('/endJob', [JobController::class, 'end_job']);
