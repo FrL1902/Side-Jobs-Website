@@ -67,6 +67,14 @@
                             <span>Account Created</span>
                             <p>{{date_format(date_create($userInfo->created_at), 'd-M-Y')}}</p>
                         </div>
+                        <div class="mt-2">
+                            @if ($userInfo->bank_id == '-' || $userInfo->account_number == '-')
+                                <span style="color:red">Bank account not established</span>
+                            @else
+                                <span style="color:rgb(39, 209, 62)">Bank account established</span>
+                            @endif
+
+                        </div>
                     </div>
                     <div class="p-2 text-center" style="height: 10%;">
                         {{-- <button type="button" class="btn btn-info">Edit User Info</button> --}}
@@ -91,11 +99,11 @@
                         </div>
                         <div class="mt-2">
                             <span>Jobs Done</span>
-                            <p>12345</p>
+                            <p>1</p>
                         </div>
                         <div class="mt-2">
                             <span>Average Job Rating</span>
-                            <p>xx / 5 stars</p>
+                            <p>4 / 5 stars</p>
                         </div>
                     </div>
                     <div class="p-2 text-center" style="height: 10%;">
@@ -181,7 +189,7 @@
             <form enctype="multipart/form-data" method="post" action="/changeUserInfo">
             @csrf
             <div class="modal-body">
-                <div class="form-group mt-3">
+                <div class="form-group">
                     <label for="phone_number">Phone Number</label>
                     <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
                         placeholder="Address" value="{{$userInfo->phone_number}}" id="phone_number"
@@ -208,6 +216,34 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                <div class="form-group mt-3">
+                    {{-- <label for="city">City</label>
+                    <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                        placeholder="City" value="{{$userInfo->city_id}}" id="city"
+                        name="city"> --}}
+
+                    <label for="editBankInfo">Nama Bank</label>
+                    <select class="form-control" id="editBankInfo"
+                        data-width="100%" name="bank">
+                        @if ($userInfo->bank_id == '-')
+                            <option value="">pilih bank rekening anda (untuk pembayaran kerja)</option>
+                        @else
+                            <option value="{{$userInfo->bank_id}}">{{App\Models\Bank::seeBank($userInfo->bank_id)}}</option>
+                        @endif
+                        @foreach ($banks as $data)
+                            <option value="{{ $data->id }}">
+                                {{ $data->bank_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="user_bank_account">Rekening Bank</label>
+                    <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                        placeholder="Address" value="{{$userInfo->account_number}}" id="user_bank_account"
+                        name="user_bank_account">
                 </div>
                 <div class="form-group mt-3">
                     <label for="user_address">Address</label>
@@ -298,6 +334,10 @@
 @section('script')
 <script>
     $('#editUserInfo').select2({
+        dropdownParent: $('#editUserInfoModal'),
+        // placeholder: 'Pilih Kota'
+    });
+    $('#editBankInfo').select2({
         dropdownParent: $('#editUserInfoModal'),
         // placeholder: 'Pilih Kota'
     });
