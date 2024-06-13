@@ -20,7 +20,8 @@
 </head>
 
 <style>
-.alert{
+
+.banner{
     background: #ffdb9b;
     padding:20px 40px;
     min-width: 420px;
@@ -32,17 +33,29 @@
     margin-top:75px
 }
 
-.alert .close-btn{
+.alert1{
+    background: #ffdb9b;
+    padding:20px 40px;
+    min-width: 420px;
+    position: absolute;
+    right:0px;
+    top:10px;
+    border-radius: 4px;
+    border-left: 8px solid #ffa502;
+    margin-top:75px
+}
+
+.alert1 .close-btn{
     position: absolute;
     right: 0px;
     top: 50%;
     transform: translateY(-50%);
-    background: #ffffff;
+    background: #f72f2f;
     padding: 20px 18px;
     cursor: pointer;
 }
 
-.alert.show{
+.alert1.show{
     animation: show_slide 1s ease forwards;
 }
 @keyframes show_slide {
@@ -60,14 +73,95 @@
     }
 }
 
-.alert.hide{
+.alert1.hide{
     display:none;
 }
 
 </style>
 
 <body>
+
+
+        {{-- <div class="alert1 alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">tes</span>
+            <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #715f5a;">
+                <span style="font-size:17px"><strong>x</strong></span>
+              </button>
+        </div> --}}
+
+        {{-- <div class="alert1 alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">tes2</span>
+            <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #715f5a;">
+                <span style="font-size:17px"><strong>x</strong></span>
+              </button>
+        </div>
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div> --}}
+
     <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
+        @if (session('statusSuccess'))
+        {{-- <p class="text-center text-primary">{{ session('status') }}</p> --}}
+            <div class="alert1 alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
+                <span class="fas fa-exclamation-circle"></span>
+                <span class="msg">{{ session('statusSuccess') }}</span>
+                <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #02ff0a;">
+                    <span style="font-size:17px"><strong>x</strong></span>
+                </button>
+            </div>
+        @elseif (session('statusWarning'))
+            <div class="alert1 alert show" style="background: #ffde9b;border-left: 8px solid #ff9e02;">
+                <span class="fas fa-exclamation-circle"></span>
+                <span class="msg">{{ session('statusWarning') }}</span>
+                <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #ff9e02;">
+                    <span style="font-size:17px"><strong>x</strong></span>
+                </button>
+            </div>
+        @elseif (session('statusFailed'))
+            <div class="alert1 alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
+                <span class="fas fa-exclamation-circle"></span>
+                <span class="msg">{{ session('statusFailed') }}</span>
+                <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #ff3d02;">
+                    <span style="font-size:17px"><strong>x</strong></span>
+                </button>
+            </div>
+        @elseif ($errors->any())
+            <div class="alert1 alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
+                <span class="fas fa-exclamation-circle"></span>
+                <span class="msg">{{ $errors->first() }}</span>
+                <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #ff3d02;">
+                    <span style="font-size:17px"><strong>x</strong></span>
+                </button>
+            </div>
+        @endif
+        {{-- <div class="alert1 alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
+            <span class="fas fa-exclamation-circle"></span>
+            <span class="msg">tes2</span>
+            <button type="button" class="close close-btn" data-bs-dismiss="alert" aria-label="Close" style="background: #715f5a;">
+                <span style="font-size:17px"><strong>x</strong></span>
+              </button>
+        </div> --}}
+
+        @auth
+            @if (App\Models\Job::checkOngoingJob())
+                <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(50%);">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>ALERT</strong>: you have an active job
+                        {{-- <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button> --}}
+                    </div>
+                </div>
+            @endif
+        @endauth
+
+
         <div class="container">
             <a class="navbar-brand" href="/"><span style="color: rgb(57, 82, 208)">Odder</span><span style="color: rgb(245, 205, 25)">Work</span></a>
 
@@ -169,40 +263,10 @@
         {{-- @if ($errors->any())
         <p class="text-center text-danger">{{ $errors->first() }}</p>
         @endif --}}
-        @if (session('statusSuccess'))
-        {{-- <p class="text-center text-primary">{{ session('status') }}</p> --}}
-        <div class="alert show" style="background: #9bff9d;border-left: 8px solid #02ff0a;">
-            <span class="fas fa-exclamation-circle"></span>
-            <span class="msg">{{ session('statusSuccess') }}</span>
-            <div class="close-btn" style="background: #02ff0a;">
-                <span style="font-size:17px"><strong>x</strong></span>
-            </div>
+
+        <div>
+
         </div>
-        @elseif (session('statusWarning'))
-        <div class="alert show" style="background: #ffde9b;border-left: 8px solid #ff9e02;">
-            <span class="fas fa-exclamation-circle"></span>
-            <span class="msg">{{ session('statusWarning') }}</span>
-            <div class="close-btn" style="background: #ff9e02;">
-                <span style="font-size:17px"><strong>x</strong></span>
-            </div>
-        </div>
-        @elseif (session('statusFailed'))
-        <div class="alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
-            <span class="fas fa-exclamation-circle"></span>
-            <span class="msg">{{ session('statusFailed') }}</span>
-            <div class="close-btn" style="background: #ff3d02;">
-                <span style="font-size:17px"><strong>x</strong></span>
-            </div>
-        </div>
-        @elseif ($errors->any())
-        <div class="alert show" style="background: #ff9b9b;border-left: 8px solid #ff3d02;">
-            <span class="fas fa-exclamation-circle"></span>
-            <span class="msg">{{ $errors->first() }}</span>
-            <div class="close-btn" style="background: #ff3d02;">
-                <span style="font-size:17px"><strong>x</strong></span>
-            </div>
-        </div>
-        @endif
         @yield('content')
     </main>
 
@@ -265,14 +329,24 @@
                 //
             });
         });
-    </script>
 
-    <script>
-        $('.close-btn').click(function(){
-            $('.alert').addClass("hide");
-            $('.alert').removeClass("show");
+        $(document).ready(function() {
+            $('#add-row2').DataTable({
+                //     dom: 'Bfrtip',
+                //     buttons: [
+                //         'copy', 'csv', 'excel', 'pdf', 'print'
+                //     ]
+                //
+            });
         });
     </script>
+
+    {{-- <script>
+        $('.close-btn').click(function(){
+            $('.alert1').addClass("hide");
+            $('.alert1').removeClass("show");
+        });
+    </script> --}}
 
     @yield('script')
 

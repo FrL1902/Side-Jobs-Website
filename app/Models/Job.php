@@ -20,4 +20,15 @@ class Job extends Model
 
         return $data;
     }
+
+    public static function checkOngoingJob(){
+        $data = Job::where('job_status', 'ongoing')->where('worker_id', auth()->user()->id)->count();
+        // dd($data);
+
+        if($data>0){
+            return true;
+        }
+
+        return false;
+    }
 }

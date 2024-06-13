@@ -6,8 +6,33 @@
     <header class="py-3 mb-4">
         <div class="container d-flex flex-wrap justify-content-between mt-4">
             <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                <h2>Job Info</h2>
+                <h2>Job Info
+                    @if ($jobInfo->job_status == 'opened')
+                        <span style="color: rgb(0, 198, 0)">(Opened)</span>
+                    @elseif($jobInfo->job_status == 'ongoing')
+                        <span style="color: rgb(198, 148, 0)">(ongoing)</span>
+                    @elseif($jobInfo->job_status == 'finished')
+                        <span style="color: rgb(0, 89, 198)">(finished)</span>
+                    @elseif($jobInfo->job_status == 'cancelled')
+                        <span style="color: rgb(198, 23, 0)">(cancelled)</span>
+                    @endif
+                </h2>
+
             </a>
+            <div>
+                <button type="button"  class="btn btn-primary" data-bs-target="#makeJobModal"data-bs-toggle="modal">Edit Job</button>
+                {{-- <div class="dropdown"> --}}
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Job Status
+                    </button>
+                    <ul class="dropdown-menu">
+                        @if ($jobInfo->job_status == 'ongoing')
+                            <li><a class="dropdown-item" href="#">End Job</a></li>
+                        @endif
+                            <li><a class="dropdown-item" href="#">Cancel Job</a></li>
+                    </ul>
+                  {{-- </div> --}}
+            </div>
         </div>
     </header>
     <div class="container" style="min-height:100vh">
@@ -85,14 +110,12 @@
                 </div>
             </div>
         </div>
-
-
-
+    </div>
         {{-- table for job appliers --}}
-        <div class="container d-flex flex-wrap justify-content-center mt-4" style="min-height: 80vh">
+        <div class="container d-flex flex-wrap justify-content-center" style="min-height: 80vh">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="add-row" class="display table table-striped table-hover">
+                    <table id="add-row2" class="display table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 20%">apply time</th>
@@ -120,32 +143,48 @@
                                     <td class="text-start align-middle"><a class="btn btn-primary" href="/profile/view/{{$data->worker_id}}">See Profile</a></td>
                                     {{-- unlocked no, applied yes ||normal --}}
                                     {{-- unlocked yes, applied no ||ga normal || kalo udah unlocked emang harus udah apply dulu, jadi case ini harusnya ga ada --}}
-                                    <td class="align-middle"><button type="button" class="btn btn-primary"
-                                        data-bs-target="#decideModal"
-                                        data-bs-toggle="modal"
-                                        >Decide</button>
+                                    @if ($data->status == 'applying')
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-primary"
+                                            data-bs-target="#decideModal"
+                                            data-bs-toggle="modal"
+                                            >Decide</button>
 
-                                        <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a href="/declineApplicant/" class="btn btn-danger">Tidak</a>
-                                                    <a href="/acceptApplicant/" class="btn btn-primary">Ya</a>
-                                                    {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
-                                                    <button type="button" class="btn btn-primary">Ya</button> --}}
-                                                </div>
+                                            <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="/declineWorker" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                            <button type="submit" class="btn btn-danger">Tidak</button>
+                                                        </form>
+                                                        <form action="/acceptWorker" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                            <button type="submit" class="btn btn-primary">Ya</button>
+                                                        </form>
+                                                        {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                                                        <button type="button" class="btn btn-primary">Ya</button> --}}
+                                                    </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-
+                                        </td>
+                                    @elseif ($data->status == 'declined')
+                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">declined</td>
+                                    @elseif ($data->status == 'accepted')
+                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(1, 181, 1)">accepted</td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
@@ -153,7 +192,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
 
 @endsection
