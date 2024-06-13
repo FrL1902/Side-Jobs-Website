@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use App\Models\City;
 use App\Models\Employer;
 use App\Models\User;
@@ -67,7 +68,13 @@ class UserController extends Controller
         // dd($cities);
         // dd($userInfo);
 
-        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo', 'cities', 'jobCount'));
+        if(auth()->user()->bank_id == '-'){
+            $banks = Bank::all();
+        } else {
+            $banks = Bank::where('id', '!=', auth()->user()->bank_id)->get();
+        }
+
+        return view('profile', compact('userInfo', 'workerInfo', 'employerInfo', 'cities', 'jobCount', 'banks'));
     }
 
     public function user_login(Request $request)
@@ -125,6 +132,8 @@ class UserController extends Controller
         $account->address = '-';
         $account->account_activated = 'yes';
         $account->image_path = '-';
+        $account->bank_id = '-';
+        $account->account_number = '-';
         $account->save();
 
         $worker = new Worker();
@@ -268,11 +277,17 @@ class UserController extends Controller
         $request->validate([
             'phone_number' => 'required|max:30',
             'city' => 'required',
+            'bank' => 'required',
+            'user_bank_account' => 'required|min:3|max:50',
             'user_address' => 'required|min:10|max:100',
         ], [
             'phone_number.required' => 'Phone Number anda harus diisi',
             'phone_number.max' => 'Phone Number maksimal 30 karakter',
             'city.required' => 'city anda harus diisi',
+            'bank.required' => 'bank anda harus diisi',
+            'user_bank_account.required' => 'rekening bank anda harus diisi',
+            'user_bank_account.min' => 'rekening bank minimal 3 karakter',
+            'user_bank_account.max' => 'rekening bank maksimal 50 karakter',
             'user_address.required' => 'address anda harus diisi',
             'user_address.min' => 'address minimal 10 karakter',
             'user_address.max' => 'address maksimal 100 karakter',
@@ -282,6 +297,8 @@ class UserController extends Controller
         User::where('id',  auth()->user()->id)->update([
             'phone_number' => $request->phone_number,
             'city_id' => $request->city,
+            'bank_id' => $request->bank,
+            'account_number' => $request->user_bank_account,
             'address' => $request->user_address,
         ]);
 
