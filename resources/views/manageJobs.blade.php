@@ -6,13 +6,13 @@
     @auth
         <header class="py-3 mb-4">
             <div class="container d-flex flex-wrap justify-content-between mt-4">
-            <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-                <h2>Manage Jobs Page</h2>
-            </a>
-            @if (Auth::user()->role == 2)
-                {{-- <a type="button" class="btn align-middle mt-3 btn-primary" href="/#" style="height:100%">Manage your jobs</a> --}}
-                <button type="button" style="height:100%" class="btn btn-primary" data-bs-target="#makeJobModal"data-bs-toggle="modal">Make New Job</button>
-            @endif
+                <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
+                    <h2>Manage Jobs Page</h2>
+                </a>
+                @if (Auth::user()->role == 2)
+                    {{-- <a type="button" class="btn align-middle mt-3 btn-primary" href="/#" style="height:100%">Manage your jobs</a> --}}
+                    <button type="button" style="height:100%" class="btn btn-primary" data-bs-target="#makeJobModal"data-bs-toggle="modal">Make New Job</button>
+                @endif
             </div>
         </header>
     @endauth

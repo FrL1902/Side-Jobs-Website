@@ -164,4 +164,33 @@ class JobController extends Controller
 
         return redirect()->back();
     }
+
+    public function decline_worker(Request $request){
+
+        Appliers::where('worker_id', $request->workerId)->where('job_id', $request->jobId)->update([
+            'status' => 'declined',
+        ]);
+
+        session()->flash('statusSuccess', 'Worker Rejected!');
+        return redirect()->back();
+    }
+
+    public function accept_worker(Request $request){
+        // dd(2);
+        Appliers::where('worker_id', $request->workerId)->where('job_id', $request->jobId)->update([
+            'status' => 'accepted',
+        ]);
+
+        Appliers::where('job_id', $request->jobId)->where('status', 'applying')->update([
+            'status' => 'declined',
+        ]);
+
+        Job::where('id', $request->jobId)->update([
+            'job_status' => 'ongoing',
+            'worker_id' => $request->workerId,
+        ]);
+
+        session()->flash('statusSuccess', 'Worker Accepted!');
+        return redirect()->back();
+    }
 }
