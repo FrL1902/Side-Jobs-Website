@@ -210,16 +210,18 @@
                             </div>
                         @endif
 
-                        <div class="form-group mb-2">
-                            <label for="largeInput">Rating From Employer</label>
-                            <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeRating($jobInfo->id)}}/5"
-                                aria-label="Disabled input example" disabled>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label for="largeInput">Comment From Employer</label>
-                            <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeComment($jobInfo->id)}}"
-                                aria-label="Disabled input example" disabled>
-                        </div>
+                        @if ($jobInfo->job_status == 'finished')
+                            <div class="form-group mb-2">
+                                <label for="largeInput">Rating From Employer</label>
+                                <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeRating($jobInfo->id)}}/5"
+                                    aria-label="Disabled input example" disabled>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="largeInput">Comment From Employer</label>
+                                <input class="form-control" type="text" placeholder="{{App\Models\Rating::seeComment($jobInfo->id)}}"
+                                    aria-label="Disabled input example" disabled>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
