@@ -43,4 +43,8 @@ class HomeController extends Controller
     {
         return view('homeLoggedIn');
     }
+
+    public function about_page(){
+        return view('about');
+    }
 }

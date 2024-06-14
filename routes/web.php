@@ -22,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/welcome', [HomeController::class, 'welcome']);
+Route::get('/about', [HomeController::class, 'about_page']);
 
 Route::get('/searchJobs', [JobController::class, 'search_job_page']);
-
 
 
 Route::get('/loginPage', [UserController::class, 'login_page']);

@@ -148,18 +148,15 @@
               </button>
         </div> --}}
 
-        @auth
+        {{-- @auth
             @if (App\Models\Job::checkOngoingJob())
                 <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(50%);">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>ALERT</strong>: you have an active job
-                        {{-- <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button> --}}
                     </div>
                 </div>
             @endif
-        @endauth
+        @endauth --}}
 
 
         <div class="container">
@@ -211,7 +208,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link @yield('aboutButton')" href="/about">About</a>
                     </li>
 
 
