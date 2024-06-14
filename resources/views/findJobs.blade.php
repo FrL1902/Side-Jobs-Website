@@ -12,7 +12,7 @@
         <button type="button" style="height:100%" class="btn btn-warning" data-bs-target="#filterJobsModal"data-bs-toggle="modal">FILTER</button>
         </div>
     </header>
-    <div class="container d-flex justify-content-center" style="min-height:70vh; width:100%">
+    <div class="container d-flex justify-content-center" style="min-height:50vh; width:100%">
         <div style="width:70%; padding-bottom: 20px;">
             <div class="d-flex flex-column" style="height: 100%; padding:10px">
                 <div class="p-2 mb-5 text-center" style="height: 8%;">

@@ -11,7 +11,7 @@
         <button type="button" style="height:100%" class="btn btn-warning" data-bs-target="#filterUserModal"data-bs-toggle="modal">FILTER</button>
         </div>
     </header>
-    <div class="container d-flex flex-column" style="min-height:70vh; width:100%">
+    <div class="container d-flex flex-column" style="min-height:50vh; width:100%">
         <div class='d-flex col-9 flex-column'>
             <div class="row d-flex justify-content-start g-0" id="areaList">
             @foreach ($users as $data)
@@ -56,7 +56,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Job</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Filter User</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form enctype="multipart/form-data" method="post" action="/makeJob">

@@ -186,6 +186,7 @@ class UserController extends Controller
             'has_applied' => 'yes',
         ]);
 
+        session()->flash('status', 'Application sent to admin! please wait');
 
         return redirect('/');
     }
