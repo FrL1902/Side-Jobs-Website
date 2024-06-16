@@ -40,7 +40,13 @@
                                 border: 2px solid #000000;">
                                     <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
                                     <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong>
+                                        @if ($data->city == '-')
+                                            {{$data->city}}
+                                        @else
+                                            {{App\Models\City::seeCity($data->city)}}
+                                        @endif
+                                    </p>
                                     <p style="font-size:15px"><strong>Status:</strong>
                                         @if ($data->job_status == 'opened')
                                             <strong style="color: rgb(0, 198, 0)">Opened</strong>
@@ -77,7 +83,13 @@
                                 border: 2px solid #000000;">
                                     <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
                                     <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                    <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                    <p style="font-size:15px"><strong>City:</strong>
+                                        @if ($data->city == '-')
+                                            {{$data->city}}
+                                        @else
+                                            {{App\Models\City::seeCity($data->city)}}
+                                        @endif
+                                    </p>
                                     <p style="font-size:15px"><strong>Status:</strong>
                                         @if ($data->job_status == 'finished')
                                             <strong style="color: rgb(0, 89, 198)">Finished</strong>

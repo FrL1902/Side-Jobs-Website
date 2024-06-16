@@ -30,7 +30,13 @@
                             <div style="height: 100%; width:70%;">
                                 <p style="font-size:15px"><strong>budget:</strong> {{$data->job_compensation}}</p>
                                 <p style="font-size:15px"><strong>Deadline:</strong> {{date_format(date_create($data->job_deadline), 'd-M-Y')}}</p>
-                                <p style="font-size:15px"><strong>City:</strong> {{$data->city}}</p>
+                                <p style="font-size:15px"><strong>City:</strong>
+                                    @if ($data->city == '-')
+                                        {{$data->city}}
+                                    @else
+                                        {{App\Models\City::seeCity($data->city)}}
+                                    @endif
+                                </p>
                                 <p style="font-size:15px"><strong>Job Type:</strong>
                                     @if ($data->is_online == 'yes')
                                         online
