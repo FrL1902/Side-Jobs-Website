@@ -57,6 +57,7 @@
                             <p>no data</p>
                         </div>
                     @endif
+                    <a href="/activeJobs" style>see more active jobs</a>
                 </div>
             </div>
             <div style="width:50%; padding-bottom: 20px;">
@@ -93,6 +94,7 @@
                             <p>no data</p>
                         </div>
                     @endif
+                    <a href="/pastJobs" style>see more past jobs</a>
                 </div>
             </div>
         </div>
