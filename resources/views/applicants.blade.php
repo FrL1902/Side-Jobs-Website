@@ -26,7 +26,7 @@
     </header>
     @endauth
 
-    <div class="container d-flex flex-wrap justify-content-center mt-4" style="min-height: 80vh">
+    <div class="container d-flex flex-wrap justify-content-center mt-4" style="min-height: 50vh">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="add-row" class="display table table-striped table-hover">
