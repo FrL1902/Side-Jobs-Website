@@ -15,7 +15,7 @@
                 @endif
                 @if (Auth::user()->role == 1)
                     {{-- <a type="button" class="btn align-middle mt-3 btn-primary" href="/#" style="height:100%">Manage your jobs</a> --}}
-                    <a href="/userApplies/{{auth()->user()->id}}" style="height:100%" class="btn btn-primary">See Job Applies</a>
+                    <a href="/userApplies" style="height:100%" class="btn btn-primary">See Job Applies</a>
                 @endif
             </div>
         </header>

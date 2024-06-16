@@ -206,9 +206,9 @@ class JobController extends Controller
             'status' => 'accepted',
         ]);
 
-        // Appliers::where('job_id', $request->jobId)->where('status', 'applying')->update([
-        //     'status' => 'declined',
-        // ]);
+        Appliers::where('job_id', $request->jobId)->where('status', 'applying')->update([
+            'status' => 'declined',
+        ]);
 
         Job::where('id', $request->jobId)->update([
             'job_status' => 'ongoing',
@@ -274,5 +274,53 @@ class JobController extends Controller
 
         session()->flash('statusSuccess', 'Job Finished!');
         return redirect('/manageJobs');
+    }
+
+    public function active_jobs_page(){
+        if(auth()->user()->role == 1){
+            $activeJobs = Job::where('worker_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'opened')
+                        ->orWhere('job_status', 'ongoing');
+                })
+                ->latest()->simplePaginate(10);
+
+        } else if(auth()->user()->role == 2){
+            $activeJobs = Job::where('employer_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'opened')
+                        ->orWhere('job_status', 'ongoing');
+                })
+                ->latest()->simplePaginate(10);
+        }
+
+        return view('activeJobs', compact('activeJobs'));
+    }
+
+    public function past_jobs_page(){
+        if(auth()->user()->role == 1){
+            $pastJobs = Job::where('worker_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'finished')
+                        ->orWhere('job_status', 'cancelled');
+                })
+                ->latest()->simplePaginate(10);
+
+        } else if(auth()->user()->role == 2){
+            $pastJobs = Job::where('employer_id', auth()->user()->id)
+                ->where(function($query) {
+                    $query->where('job_status', 'finished')
+                        ->orWhere('job_status', 'cancelled');
+                })
+                ->latest()->simplePaginate(10);
+        }
+
+        return view('pastJobs', compact('pastJobs'));
+    }
+
+    public function user_applies_job(){
+        $appliers = Appliers::where('worker_id', auth()->user()->id)->latest()->get();
+
+        return view('userApply', compact('appliers'));
     }
 }
