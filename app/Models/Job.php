@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Job extends Model
 {
@@ -30,5 +31,26 @@ class Job extends Model
         }
 
         return false;
+    }
+
+    public static function seeFinishedJobs($email){
+        $user = User::where('email', $email)->first();
+
+        $job = Job::where('worker_id', $user->id)->where('job_status', 'finished')->count();
+
+        return $job;
+    }
+
+    public static function seeRating($email){
+        $user = User::where('email', $email)->first();
+        $job = Job::where('worker_id', $user->id)->where('job_status', 'finished')->count();
+
+        $score = DB::table('ratings')
+            ->join('jobs', 'jobs.id', '=', 'ratings.job_id')
+            ->select('ratings.job_rating')->where('jobs.worker_id', $user->id)->sum('ratings.job_rating');
+            // InPallet::where('item_id', $request->itemidforpallet)->sum('stock');
+
+        $rating = $score/$job;
+        return $rating;
     }
 }

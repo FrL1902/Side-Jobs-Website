@@ -21,4 +21,10 @@ class City extends Model
 
         return $cityName;
     }
+
+    public static function getCities(){
+        $city = City::all();
+
+        return $city;
+    }
 }
