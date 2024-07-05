@@ -9,6 +9,11 @@
         <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
             <h2>Find Jobs Page</h2>
         </a>
+        @if(session('filter'))
+            <a href="/searchJobs" style="height:100%; margin-right:5px" class="btn btn-danger" >
+                Remove Filter
+            </a>
+        @endif
         <button type="button" style="height:100%" class="btn btn-warning" data-bs-target="#filterJobsModal"data-bs-toggle="modal">FILTER</button>
         </div>
     </header>
@@ -73,32 +78,44 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Filter Job</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form enctype="multipart/form-data" method="post" action="/makeJob">
+            <form enctype="multipart/form-data" method="get" action="/searchJobs">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
                     <label for="">Check the box if job is online</label>
-                    <input type="checkbox" id="" name="">
+                    <input type="checkbox" id="" name="is_online">
                 </div>
                 <div class="form-group mt-3">
                     <label for="supplier">Job name</label>
                     <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
-                        placeholder="what kind of job?" value="" id="name"
-                        name="employer_address">
+                        placeholder="what kind of job?" value="" id="job_name"
+                        name="job_name">
                 </div>
-                <div class="form-group mt-3">
+                {{-- <div class="form-group mt-3">
                     <label for="supplier">Job Area</label>
                     <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
-                        placeholder="Choose a city" value="" id="employer_address"
-                        name="employer_address">
+                        placeholder="Choose a city" value="" id="job_area"
+                        name="job_area">
+                </div> --}}
+                <div class="form-group mt-3">
+                    <label for="job_area">City</label>
+                    <select class="form-control" id="job_area"
+                        data-width="100%" name="job_area">
+                        <option value=""></option>
+                        @foreach (App\Models\City::getCities() as $data)
+                            <option value="{{ $data->id }}">
+                                {{ $data->city_name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group mt-3">
                     <label for="compensation">Compensation Minimum</label>
-                    <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation" min="0">
+                    <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation_min" min="0">
                 </div>
                 <div class="form-group mt-3">
                     <label for="compensation">Compensation Maximum</label>
-                    <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation" min="0">
+                    <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation_max" min="0">
                 </div>
                 <div class="form-group mt-3">
                     <label for="deadline">Deadline Before</label>
@@ -112,5 +129,18 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+
+@section('script')
+
+<script>
+    $('#job_area').select2({
+        dropdownParent: $('#filterJobsModal'),
+        placeholder: 'Pilih Kota'
+    });
+
+</script>
 
 @endsection

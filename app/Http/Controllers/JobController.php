@@ -8,19 +8,57 @@ use App\Models\City;
 use App\Models\Job;
 use App\Models\Rating;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
-    public function search_job_page()
+    public function search_job_page(Request $request)
     {
-        $activeJobs = Job::where(function($query) {
-                        $query->where('job_status', 'opened');
-                    })
-                    ->simplePaginate(5);
+        session()->forget('filter');
+        // $activeJobs = Job::where(function($query) {
+        //                 $query->where('job_status', 'opened');
+        //             })
+        //             ->simplePaginate(5);
 
-        return view('findJobs', compact('activeJobs'));
+        $activeJobs = Job::query();
+
+        $activeJobs->when($request->is_online, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('job_status', 'opened')
+                        ->where('is_online', '=', 'yes');
+        });
+
+        $activeJobs->when($request->job_name, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('job_title', 'like', '%'.$request->job_name.'%');
+        });
+
+        $activeJobs->when($request->job_area, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('city', 'like', $request->job_area);
+        });
+
+        $activeJobs->when($request->compensation_min, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('job_compensation', '>=', $request->compensation_min);
+        });
+
+        $activeJobs->when($request->compensation_max, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('job_compensation', '<=', $request->compensation_max);
+        });
+
+        $activeJobs->when($request->deadline, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            $date_to = Carbon::parse($request->deadline)->endOfDay();
+            // dd($date_to);
+            return $query->whereDate('job_deadline', '<=', $date_to);
+        });
+
+        // return view('findJobs', compact('activeJobs'));
+        return view('findJobs', ['activeJobs' => $activeJobs->where('job_status', 'opened')->latest()->simplePaginate(5)]);
     }
 
     public function manage_jobs_page()
