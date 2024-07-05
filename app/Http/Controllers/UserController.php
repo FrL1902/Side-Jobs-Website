@@ -15,11 +15,41 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function search_user_page()
+    public function search_user_page(Request $request)
     {
-        return view('findUsers', [
-            'users' => DB::table('users')->simplePaginate(3)
-        ]);
+
+        // $users =  DB::table('users')->latest()->simplePaginate(3);
+
+        // return $request->all();
+        session()->forget('filter');
+
+        $users = User::query();
+
+        // return view('findUsers', [
+        //     'users' => DB::table('users')->latest()->simplePaginate(3)
+        // ]);
+
+        $users->when($request->name, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('first_name', 'like', '%'.$request->name)
+                        ->orWhere('last_name', 'like', '%'.$request->name);
+        });
+
+        $users->when($request->area, function ($query) use ($request) {
+            session()->flash('filter', 'filter');
+            return $query->where('city_id', '=', $request->area);
+        });
+
+        // $users = $users->simplePaginate(2);
+
+        // $users->appends($request->all);
+
+        // return view('findUsers',[
+        //     'users' => $users,
+        //     'filters' => $request->all()
+        // ]);
+
+        return view('findUsers', ['users' => $users->latest()->simplePaginate(3)]);
     }
 
     public function login_page()
@@ -57,6 +87,7 @@ class UserController extends Controller
             ->select('users.*', 'cities.city_name')
             ->where('users.id',  auth()->user()->id)->first();
             // dd(2);
+            // $userInfo = User::where();
         }
 
         $jobCount = DB::table('jobs')
@@ -374,5 +405,9 @@ class UserController extends Controller
 
         // dd($userInfo);
         return view('userProfiles', compact('userData', 'workerInfo', 'employerInfo', 'jobCount')); //ganti dari userinfo ke userdata, gajelas kenapa ga bisa anjing
+    }
+
+    public function filter_users(Request $request){
+
     }
 }
