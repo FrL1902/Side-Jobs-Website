@@ -75,12 +75,15 @@
                         </div>
                         <div class="mt-2">
                             <span>Jobs Done</span>
-                            <p>12345</p>
+                            <p>{{App\Models\Job::seeFinishedJobs($workerInfo->user_email)}}</p>
                         </div>
-                        <div class="mt-2">
-                            <span>Average Job Rating</span>
-                            <p>xx / 5 stars</p>
-                        </div>
+                        @if (App\Models\Job::seeFinishedJobs($workerInfo->user_email) >0)
+                            <div class="mt-2">
+                                <span>Average Job Rating</span>
+                                <p>{{App\Models\Job::seeRating($workerInfo->user_email)}} / 5 stars</p>
+                            </div>
+                        @else
+                        @endif
                     </div>
                 </div>
             </div>
