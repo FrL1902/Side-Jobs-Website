@@ -192,6 +192,7 @@
         dropdownParent: $('#makeJobModal'),
         placeholder: 'Pilih Kota'
     });
+
 </script>
 
 @endsection
