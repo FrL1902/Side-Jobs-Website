@@ -33,6 +33,7 @@ Route::get('/registerPage', [UserController::class, 'register_page']);
 Route::post('/makeAccount', [UserController::class, 'make_account']);
 Route::get('/logout', [UserController::class, 'logout']);
 Route::get('/searchUsers', [UserController::class, 'search_user_page']);
+// Route::post('/filterUser', [UserController::class, 'filter_users']);
 
 Route::get('/toWorker', [UserController::class, 'switch_role_to_worker']);
 Route::get('/toEmployer', [UserController::class, 'switch_role_to_employer']);
