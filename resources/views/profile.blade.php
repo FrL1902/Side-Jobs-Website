@@ -99,12 +99,15 @@
                         </div>
                         <div class="mt-2">
                             <span>Jobs Done</span>
-                            <p>1</p>
+                            <p>{{App\Models\Job::seeFinishedJobs($workerInfo->user_email)}}</p>
                         </div>
-                        <div class="mt-2">
-                            <span>Average Job Rating</span>
-                            <p>4 / 5 stars</p>
-                        </div>
+                        @if (App\Models\Job::seeFinishedJobs($workerInfo->user_email) >0)
+                            <div class="mt-2">
+                                <span>Average Job Rating</span>
+                                <p>{{App\Models\Job::seeRating($workerInfo->user_email)}} / 5 stars</p>
+                            </div>
+                        @else
+                        @endif
                     </div>
                     <div class="p-2 text-center" style="height: 10%;">
                         {{-- <button type="button" class="btn btn-info">Edit Worker Info</button> --}}
