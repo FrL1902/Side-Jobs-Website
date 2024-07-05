@@ -227,102 +227,180 @@
             </div>
         </div>
     </div>
-        @if (auth()->user()->role == 2)
-        {{-- table for job appliers --}}
-        <div class="container d-flex flex-wrap justify-content-center" style="min-height: 80vh">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="add-row2" class="display table table-striped table-hover">
-                        <thead>
+    @if (auth()->user()->role == 2)
+    {{-- table for job appliers --}}
+    <div class="container d-flex flex-wrap justify-content-center" style="min-height: 80vh">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="add-row2" class="display table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 20%">apply time</th>
+                            <th class="text-center" style="width: 10%">name</th>
+                            <th class="text-center">description</th>
+                            <th class="text-center" style="width: 10%">profile</th>
+                            <th class="text-center" style="width: 7%">Action</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="text-center" style="width: 20%">apply time</th>
+                            <th class="text-center" style="width: 10%">name</th>
+                            <th class="text-center">description</th>
+                            <th class="text-center" style="width: 10%">profile</th>
+                            <th class="text-center" style="width: 7%">Action</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach ($appliers as $data)
                             <tr>
-                                <th class="text-center" style="width: 20%">apply time</th>
-                                <th class="text-center" style="width: 10%">name</th>
-                                <th class="text-center">description</th>
-                                <th class="text-center" style="width: 10%">profile</th>
-                                <th class="text-center" style="width: 7%">Action</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th class="text-center" style="width: 20%">apply time</th>
-                                <th class="text-center" style="width: 10%">name</th>
-                                <th class="text-center">description</th>
-                                <th class="text-center" style="width: 10%">profile</th>
-                                <th class="text-center" style="width: 7%">Action</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            @foreach ($appliers as $data)
-                                <tr>
-                                    <td class="text-center align-middle">{{date_format(date_create($data->created_at), 'D H:i:s d-M-Y')}}</td>
-                                    <td class="text-start align-middle">{{App\Models\User::seeWorker($data->worker_id)}}</td>
-                                    <td class="text-start align-middle">{{$data->apply_description}}</td>
-                                    <td class="text-start align-middle"><a class="btn btn-primary" href="/profile/view/{{$data->worker_id}}">See Profile</a></td>
-                                    {{-- unlocked no, applied yes ||normal --}}
-                                    {{-- unlocked yes, applied no ||ga normal || kalo udah unlocked emang harus udah apply dulu, jadi case ini harusnya ga ada --}}
-                                    {{-- @if ($jobInfo->job_status == 'opened') --}}
-                                        @if ($data->status == 'applying')
-                                            <td class="text-center align-middle">
-                                                <button type="button" class="btn btn-primary"
-                                                data-bs-target="#decideModal"
-                                                data-bs-toggle="modal"
-                                                >Decide</button>
+                                <td class="text-center align-middle">{{date_format(date_create($data->created_at), 'D H:i:s d-M-Y')}}</td>
+                                <td class="text-start align-middle">{{App\Models\User::seeWorker($data->worker_id)}}</td>
+                                <td class="text-start align-middle">{{$data->apply_description}}</td>
+                                <td class="text-start align-middle"><a class="btn btn-primary" href="/profile/view/{{$data->worker_id}}">See Profile</a></td>
+                                {{-- unlocked no, applied yes ||normal --}}
+                                {{-- unlocked yes, applied no ||ga normal || kalo udah unlocked emang harus udah apply dulu, jadi case ini harusnya ga ada --}}
+                                {{-- @if ($jobInfo->job_status == 'opened') --}}
+                                    @if ($data->status == 'applying')
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-primary"
+                                            data-bs-target="#decideModal"
+                                            data-bs-toggle="modal"
+                                            >Decide</button>
 
-                                                <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <form action="/declineWorker" method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="jobId" value="{{$data->job_id}}">
-                                                                <input type="hidden" name="workerId" value="{{$data->worker_id}}">
-                                                                <button type="submit" class="btn btn-danger">Tidak</button>
-                                                            </form>
-                                                            <form action="/acceptWorker" method="POST">
-                                                                @csrf
-                                                                <input type="hidden" name="jobId" value="{{$data->job_id}}">
-                                                                <input type="hidden" name="workerId" value="{{$data->worker_id}}">
-                                                                <button type="submit" class="btn btn-primary">Ya</button>
-                                                            </form>
-                                                            {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
-                                                            <button type="button" class="btn btn-primary">Ya</button> --}}
-                                                        </div>
-                                                        </div>
+                                            <div class="modal fade" id="decideModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Worker Applicant</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah anda ingin "{{App\Models\User::seeWorker($data->worker_id)}}" sebagai pekerja untuk pekerjaan ini?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form action="/declineWorker" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                            <button type="submit" class="btn btn-danger">Tidak</button>
+                                                        </form>
+                                                        <form action="/acceptWorker" method="POST">
+                                                            @csrf
+                                                            <input type="hidden" name="jobId" value="{{$data->job_id}}">
+                                                            <input type="hidden" name="workerId" value="{{$data->worker_id}}">
+                                                            <button type="submit" class="btn btn-primary">Ya</button>
+                                                        </form>
+                                                        {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                                                        <button type="button" class="btn btn-primary">Ya</button> --}}
+                                                    </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        @elseif ($data->status == 'declined')
-                                            <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">declined</td>
-                                        @elseif ($data->status == 'accepted')
-                                            <td class="text-center align-middle" style="font-weight:bold; color:rgb(1, 181, 1)">accepted</td>
-                                        @endif
-                                    {{-- @else
-                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">cancelled</td>
-                                    @endif --}}
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                            </div>
+                                        </td>
+                                    @elseif ($data->status == 'declined')
+                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">declined</td>
+                                    @elseif ($data->status == 'accepted')
+                                        <td class="text-center align-middle" style="font-weight:bold; color:rgb(1, 181, 1)">accepted</td>
+                                    @endif
+                                {{-- @else
+                                    <td class="text-center align-middle" style="font-weight:bold; color:rgb(181, 16, 1)">cancelled</td>
+                                @endif --}}
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
-        @endif
+    </div>
+    @endif
+
+    {{-- edit job modal --}}
+    <div class="modal fade" id="editJobModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Current Job</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form enctype="multipart/form-data" method="post" action="/makeJob">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="supplier">Job Title</label>
+                        <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                            placeholder="Title" value="" id="employer_address"
+                            name="employer_address">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="job_description">Description</label>
+                        <textarea class="form-control" rows="3" name="job_description" id="job_description" placeholder="your job's description" style="border-color: #aaaaaa"></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="compensation">Job Compensation</label>
+                        <input type="number" class="form-control form-control" style="border-color: #aaaaaa" id="compensation" name="compensation" min="0">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="job_type2">Check the box if job is online</label>
+                        <input type="checkbox" id="job_type2" name="job_type2">
+                    </div>
+                    <div class="form-group mt-3" id="address_field2">
+                        <label for="customerLabelExportBrand">City</label>
+                        <select class="form-control" id="customerLabelExportBrand"
+                            data-width="100%" name="city">
+                            <option></option>
+                            @foreach ($city as $data)
+                                <option value="{{ $data->id }}">
+                                    {{ $data->city_name }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <label for="address" class="mt-3">Address</label>
+                        <input type="text" class="form-control form-control" style="border-color: #aaaaaa"
+                            placeholder="Address" value="" id="address"
+                            name="address">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="deadline">Deadline</label>
+                        <input type="date" class="form-control form-control-sm" style="border-color: #aaaaaa" id="deadline" name="deadline">
+                    </div>
+                    <div class="d-flex flex-row-reverse mt-4">
+                        <button type="submit" class="btn btn-primary">Make Job</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 
 @endsection
 
 @section('script')
 <script>
+    $(document).ready(function(){
+        $('#job_type2').change(function(){
+            if($(this).prop('checked')){
+                $('#address_field2').hide();
+            } else {
+                $('#address_field2').show();
+            }
+        });
+    });
+</script>
+<script>
     $('#addBankInfo').select2({
         dropdownParent: $('#endJobModal'),
         // placeholder: 'Pilih Kota'
     });
 </script>
+<script>
+    $('#customerLabelExportBrand').select2({
+        dropdownParent: $('#editJobModal'),
+        placeholder: 'Pilih Kota'
+    });
+
+</script>
 @endsection
+

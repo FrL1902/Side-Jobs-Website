@@ -161,8 +161,9 @@ class JobController extends Controller
         $jobInfo = Job::find($id);
         $appliers = Appliers::where('job_id', $jobInfo->id)->get();
         $banks = Bank::all();
+        $city = City::all();
 
-        return view('jobinfo', compact('jobInfo', 'appliers', 'banks'));
+        return view('jobinfo', compact('jobInfo', 'appliers', 'banks', 'city'));
     }
 
     public function apply_Job(Request $request){
