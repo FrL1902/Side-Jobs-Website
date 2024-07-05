@@ -148,7 +148,7 @@
               </button>
         </div> --}}
 
-        {{-- @auth
+        @auth
             @if (App\Models\Job::checkOngoingJob())
                 <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%) translateY(50%);">
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             @endif
-        @endauth --}}
+        @endauth
 
 
         <div class="container">
@@ -179,8 +179,8 @@
                                 <a class="nav-link dropdown-toggle click-scroll" href="#section_3" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Manage</a>
 
                                 <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                                    <li><a class="dropdown-item" href="#">Users</a></li>
-                                    <li><a class="dropdown-item" href="#">Jobs</a></li>
+                                    {{-- <li><a class="dropdown-item" href="#">Users</a></li>
+                                    <li><a class="dropdown-item" href="#">Jobs</a></li> --}}
                                     <li><a class="dropdown-item" href="/applicantsPage">Applicants</a></li>
                                 </ul>
                             </li>
