@@ -13,3 +13,5 @@ The project is built in the newest version of Laravel 9 and uses these requireme
 ## Extensions to be enabled in the php.ini file
 - zip
 - gd
+
+Undergrad Thesis: https://drive.google.com/file/d/17DGlMEUciLb1d-foksS-lzgVwY5SeGPC/view?usp=drive_link
